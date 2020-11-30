@@ -45,4 +45,5 @@ export class TrainComponent {
       layoutName: shiftToggle
     });
   }
+  hidden = false;
 }

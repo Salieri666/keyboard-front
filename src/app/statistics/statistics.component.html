@@ -1,0 +1,47 @@
+<div class="container">
+
+  <div class="form-group row">
+    <label for="login" class="col-sm-4 col-form-label">Логин пользователя: </label>
+    <div class="col-sm-1">
+      <input type="text" readonly class="form-control-plaintext" id="login" [(ngModel)]="login">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="allTimeTrain" class="col-sm-4 col-form-label">Количество упражнений за все время: </label>
+    <div class="col-sm-1">
+      <input type="text" readonly class="form-control-plaintext" id="allTimeTrain" [(ngModel)]="exCompl">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="winFail" class="col-sm-4 col-form-label">Успешных/Неуспешных: </label>
+    <div class="col-sm-1">
+      <input type="text" readonly class="form-control-plaintext" id="winFail" [(ngModel)]="winFail">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="allTimeErr" class="col-sm-4 col-form-label">Ошибок за все время: </label>
+    <div class="col-sm-1">
+      <input type="text" readonly class="form-control-plaintext" id="allTimeErr" [(ngModel)]="allTimeErr">
+    </div>
+  </div>
+  <div style="display: block;">
+    <canvas baseChart width="400" height="100"
+            [datasets]="lineChartData"
+            [labels]="lineChartLabels"
+            [colors]="lineChartColors"
+            [legend]="lineChartLegend"
+            [chartType]="lineChartType"
+            [plugins]="lineChartPlugins">
+    </canvas>
+  </div>
+  <p class="text-center">Список выполненных упражнений</p>
+
+  <ul class="list-group">
+    <li *ngFor="let ex of exerciseW">{{ex}}</li>
+  </ul>
+  <p class="text-center">Список проваленных упражнений</p>
+  <ul class="list-group">
+    <li *ngFor="let ex of exerciseF">{{ex}}</li>
+  </ul>
+</div>
+

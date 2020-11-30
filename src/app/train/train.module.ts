@@ -1,14 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { TrainComponent } from './train.component';
+import {TrainRoutingModule} from './train-routing.module';
 
 @NgModule({
   declarations: [
     TrainComponent
   ],
   imports: [
-    BrowserModule
+    TrainRoutingModule
   ],
   providers: [],
   bootstrap: [TrainComponent]
