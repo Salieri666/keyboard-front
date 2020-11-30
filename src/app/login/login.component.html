@@ -1,0 +1,32 @@
+<div class="container">
+  <form role="form" [hidden]="authenticated">
+    <h5 class="container row justify-content-center top-buffer">Введите данные для входа:</h5>
+    <div [hidden]="this.success">
+      <h5 class="text-danger">Ошибка входа в систему, проверьте правильность введенных данных:</h5>
+    </div>
+    <div class="form-group">
+      <label for="username">Имя пользователя:</label> <input type="text"
+                                                             class="form-control" id="username" name="username"
+                                                             [(ngModel)]="credentials.username"/>
+    </div>
+    <div class="form-group">
+      <label for="password">Пароль:</label> <input size="10" type="password"
+                                                   class="form-control" id="password" name="password"
+                                                   [(ngModel)]="credentials.password"/>
+    </div>
+    <div class="form-group" [hidden]="!register">
+      <label for="passwordCheck">Повторный ввод пароля:</label> <input size="10" type="password"
+                                                   class="form-control" id="passwordCheck" name="passwordCheck"
+                                                   [(ngModel)]="passwordCheck"/>
+    </div>
+    <button  class="btn-min btn btn-secondary" (click)="login()" [hidden]="register">Войти</button>
+    <button  class="btn-min btn btn-secondary" (click)="register=!register" [hidden]="!register">Вход</button>
+    <button class="btn-min btn btn-secondary" [hidden]="register" (click)="register=!register">Регистрация</button>
+    <button class="btn-min btn btn-secondary" [hidden]="!register" (click)="registration()">Зарегистрироваться</button>
+  </form>
+
+  <div class="container row justify-content-center" [hidden]="!authenticated">
+    <h5 class="container row justify-content-center">Нажмите, чтобы выйти из приложения</h5>
+    <button class="btn btn-dark" (click)="logout()">Выйти</button>
+  </div>
+</div>

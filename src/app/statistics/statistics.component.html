@@ -35,13 +35,17 @@
     </canvas>
   </div>
   <p class="text-center">Список выполненных упражнений</p>
+  <div class="pre-scrollable list-h">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let ex of exerciseW">{{ex}}</li>
+    </ul>
+  </div>
 
-  <ul class="list-group">
-    <li *ngFor="let ex of exerciseW">{{ex}}</li>
-  </ul>
   <p class="text-center">Список проваленных упражнений</p>
-  <ul class="list-group">
-    <li *ngFor="let ex of exerciseF">{{ex}}</li>
-  </ul>
+  <div class="pre-scrollable list-h">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let ex of exerciseF">{{ex}}</li>
+    </ul>
+  </div>
 </div>
 
