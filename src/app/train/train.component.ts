@@ -1,6 +1,8 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import Keyboard from "simple-keyboard";
 import Layout from "simple-keyboard-layouts/build/layouts/russian"
+import {AuthserviceService} from "../auth/authservice.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -8,13 +10,21 @@ import Layout from "simple-keyboard-layouts/build/layouts/russian"
   templateUrl: './train.component.html',
   styleUrls: ['./train.component.scss', "../../../node_modules/simple-keyboard/build/css/index.css"]
 })
-export class TrainComponent {
+export class TrainComponent implements OnInit {
   value = "";
   keyboard: Keyboard;
   errorCount = 0;
   exercise: string = "тест тест тест тест";
   symbolCount: number = 0;
 
+  ngOnInit() {
+    if (!this.auth.islogin)
+      this.router.navigate(['/login']);
+  }
+
+  constructor(private auth: AuthserviceService,
+              private router: Router) {
+  }
 
   ngAfterViewInit() {
     this.keyboard = new Keyboard({
@@ -56,7 +66,8 @@ export class TrainComponent {
       this.keyboard.addButtonTheme("{space}", "nextChar");
     } else this.keyboard.addButtonTheme(this.exercise[0], "nextChar");
   }
-  speed:string = "0";
+
+  speed: string = "0";
   seconds: number = 0;
   minutes: number = 0;
   interval;
@@ -103,7 +114,6 @@ export class TrainComponent {
 
   start() {
     this.pauseTimer();
-    console.log("1");
     this.startTimer();
     this.keyboard.addButtonTheme(this.exercise[0], "nextChar");
     this.keyboard.setOptions({onKeyPress: button => this.onKeyPress(button)});
