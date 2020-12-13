@@ -16,13 +16,16 @@
     </div>
     <div class="form-group" [hidden]="!register">
       <label for="passwordCheck">Повторный ввод пароля:</label> <input size="10" type="password"
-                                                   class="form-control" id="passwordCheck" name="passwordCheck"
-                                                   [(ngModel)]="passwordCheck"/>
+                                                                       class="form-control" id="passwordCheck"
+                                                                       name="passwordCheck"
+                                                                       [(ngModel)]="passwordCheck"/>
     </div>
-    <button  class="btn-min btn btn-secondary" (click)="login()" [hidden]="register">Войти</button>
-    <button  class="btn-min btn btn-secondary" (click)="register=!register" [hidden]="!register">Вход</button>
+    <button class="btn-min btn btn-secondary" (click)="login(); open(mymodal)" [hidden]="register">Войти</button>
+    <button class="btn-min btn btn-secondary" (click)="register=!register" [hidden]="!register">Вход</button>
     <button class="btn-min btn btn-secondary" [hidden]="register" (click)="register=!register">Регистрация</button>
-    <button class="btn-min btn btn-secondary" [hidden]="!register" (click)="registration(); open(mymodal)">Зарегистрироваться</button>
+    <button class="btn-min btn btn-secondary" [hidden]="!register" (click)="registration(); open(mymodal)">
+      Зарегистрироваться
+    </button>
   </form>
 
   <div class="container row justify-content-center" [hidden]="!authenticated">
