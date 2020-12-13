@@ -20,17 +20,17 @@
                                                                        name="passwordCheck"
                                                                        [(ngModel)]="passwordCheck"/>
     </div>
-    <button class="btn-min btn btn-secondary" (click)="login(); open(mymodal)" [hidden]="register">Войти</button>
-    <button class="btn-min btn btn-secondary" (click)="register=!register" [hidden]="!register">Вход</button>
-    <button class="btn-min btn btn-secondary" [hidden]="register" (click)="register=!register">Регистрация</button>
-    <button class="btn-min btn btn-secondary" [hidden]="!register" (click)="registration(); open(mymodal)">
+    <button class="btn-min btn btn-outline-info" (click)="login(); open(mymodal)" [hidden]="register">Войти</button>
+    <button class="btn-min btn btn-outline-info" (click)="register=!register" [hidden]="!register">Вход</button>
+    <button class="btn-min btn btn-outline-info" [hidden]="register" (click)="register=!register">Регистрация</button>
+    <button class="btn-min btn btn-outline-info" [hidden]="!register" (click)="registration(); open(mymodal)">
       Зарегистрироваться
     </button>
   </form>
 
   <div class="container row justify-content-center" [hidden]="!authenticated">
     <h5 class="container row justify-content-center">Нажмите, чтобы выйти из приложения</h5>
-    <button class="btn btn-dark" (click)="logout()">Выйти</button>
+    <button class="btn btn-info" (click)="logout()">Выйти</button>
   </div>
 </div>
 

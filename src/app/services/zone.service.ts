@@ -2,6 +2,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Zone} from "../models/zone";
 import {Injectable} from "@angular/core";
+
 @Injectable()
 export class ZoneService {
   constructor(private http: HttpClient) {

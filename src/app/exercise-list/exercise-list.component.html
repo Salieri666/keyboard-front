@@ -6,10 +6,34 @@
         <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Уровень сложности</button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <span *ngFor="let difficulty of difficulties">
-          <button ngbDropdownItem>{{difficulty.name}}</button>
+          <button ngbDropdownItem (click)="filter(difficulty.id)">{{difficulty.name}}</button>
             </span>
         </div>
       </div>
     </div>
   </div>
+
+  <table class="table table-striped table-margin" style="overflow-x: scroll">
+    <thead>
+    <tr>
+      <th>
+        ID
+      </th>
+      <th>
+        Сложность
+      </th>
+      <th>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let exercise of filtered">
+      <td>{{exercise.id}}</td>
+      <td>{{exercise.levelId}}</td>
+      <td>
+        <button class="btn btn-outline-info" (click)="router.navigate(['/train/'+exercise.id])">Выбрать</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>

@@ -2,7 +2,11 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import Keyboard from "simple-keyboard";
 import Layout from "simple-keyboard-layouts/build/layouts/russian"
 import {AuthserviceService} from "../auth/authservice.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Exercise} from "../models/exercise";
+import {ExerciseService} from "../services/exercise.service";
+import {DifficultyService} from "../services/difficulty.service";
+import {Difficulty} from "../models/difficulty";
 
 @Component({
   selector: 'app-root',
@@ -13,17 +17,33 @@ import {Router} from "@angular/router";
 export class TrainComponent implements OnInit {
   value = "";
   keyboard: Keyboard;
-  errorCount = 0;
-  exercise: string = "тест тест тест тест";
+  errorCount: number = 0;
+  maxErrors: number;
+  exWords: string;
   symbolCount: number = 0;
+  allSymbols: number;
+  id: number;
+  timePress: number;
 
   ngOnInit() {
     if (!this.auth.islogin)
       this.router.navigate(['/login']);
+    else {
+      this.httpExService.getID(this.id).subscribe((data: Exercise) => {
+        this.exWords = data.words;
+        this.allSymbols = this.exWords.length;
+        this.httpDiffService.getID(data.levelId).subscribe((data: Difficulty) => {
+          this.maxErrors = data.maxErrors;
+          this.timePress = data.timePress;
+        });
+      });
+
+    }
   }
 
-  constructor(private auth: AuthserviceService,
+  constructor(private auth: AuthserviceService, private httpDiffService: DifficultyService, private activateRoute: ActivatedRoute, private httpExService: ExerciseService,
               private router: Router) {
+    this.id = activateRoute.snapshot.params['id'];
   }
 
   ngAfterViewInit() {
@@ -58,13 +78,13 @@ export class TrainComponent implements OnInit {
   }
 
   changeColor() {
-    if (this.exercise[0] == " ") {
+    if (this.exWords[0] == " ") {
       this.keyboard.removeButtonTheme("{space}", "nextChar");
-    } else this.keyboard.removeButtonTheme(this.exercise[0], "nextChar");
-    this.exercise = this.exercise.substring(1);
-    if (this.exercise[0] == " ") {
+    } else this.keyboard.removeButtonTheme(this.exWords[0], "nextChar");
+    this.exWords = this.exWords.substring(1);
+    if (this.exWords[0] == " ") {
       this.keyboard.addButtonTheme("{space}", "nextChar");
-    } else this.keyboard.addButtonTheme(this.exercise[0], "nextChar");
+    } else this.keyboard.addButtonTheme(this.exWords[0], "nextChar");
   }
 
   speed: string = "0";
@@ -88,18 +108,45 @@ export class TrainComponent implements OnInit {
     clearInterval(this.interval);
   }
 
+  pressInterval;
+  timePassed: boolean;
+
+  pressTimer() {
+    this.pressInterval = setInterval(() => {
+      this.errorCount++;
+      if (this.exWords.length === 0 || this.errorCount > this.maxErrors) {
+        this.pauseTimer();
+        this.stopPressTimer();
+        this.keyboard.setOptions({onKeyPress: null})
+        //send stat
+      }
+      this.changeColor();
+    }, this.timePress * 1000);
+  }
+
+  stopPressTimer() {
+    clearInterval(this.pressInterval);
+  }
+
   onKeyPress = (button: string) => {
-    if (this.exercise.length > 0 && this.exercise[0] != button.replace("{space}", " ")) {
+
+    if (this.exWords.length > 0 && this.exWords[0] != button.replace("{space}", " ")) {
       this.errorCount++;
     }
     this.changeColor();
     this.symbolCount++;
-    if (this.exercise.length === 0) this.pauseTimer();
+    if (this.exWords.length === 0 || this.errorCount > this.maxErrors) {
+      this.pauseTimer();
+      this.stopPressTimer();
+      this.keyboard.setOptions({onKeyPress: null})
+      //send stat
+    }
     /**
      * If you want to handle the shift and caps lock buttons
      */
     if (button === "{shift}" || button === "{lock}") this.handleShift();
-
+    this.stopPressTimer();
+    this.pressTimer();
   }
 
 
@@ -113,9 +160,9 @@ export class TrainComponent implements OnInit {
   }
 
   start() {
-    this.pauseTimer();
     this.startTimer();
-    this.keyboard.addButtonTheme(this.exercise[0], "nextChar");
+    this.pressTimer();
+    this.keyboard.addButtonTheme(this.exWords[0], "nextChar");
     this.keyboard.setOptions({onKeyPress: button => this.onKeyPress(button)});
   }
 

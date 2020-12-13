@@ -4,7 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {CommonModule} from "@angular/common";
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {CustomHttpInterceptorService} from "./auth/custom-http-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,11 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     CommonModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: CustomHttpInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

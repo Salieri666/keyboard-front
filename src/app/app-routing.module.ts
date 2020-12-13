@@ -6,7 +6,7 @@ const routes: Routes = [
     path: '', redirectTo: 'login', pathMatch: 'full'
   },
   {
-    path: 'train', loadChildren: () => import('./train/train.module').then(m => m.TrainModule)
+    path: 'train/:id', loadChildren: () => import('./train/train.module').then(m => m.TrainModule)
   },
   {
     path: 'statistics', loadChildren: () => import('./statistics/statistics.module').then(m => m.StatisticsModule)

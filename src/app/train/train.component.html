@@ -2,22 +2,23 @@
   <div class="form-group row">
     <label for="errorCount" class="col-sm-2 col-form-label">Количество ошибок: </label>
     <div class="col-sm-1">
-      <input type="text" readonly class="form-control-plaintext" id="errorCount" [value]="errorCount">
+      <input type="text" readonly class="form-control-plaintext" id="errorCount" [value]="errorCount + '/' + maxErrors">
     </div>
-    <label for="speed" class="col-sm-2 col-form-label">Средняя скорость: </label>
-    <div class="col-sm-3">
-      <input type="text" readonly class="form-control-plaintext" id="speed" [value]="speed + ' символов в секунду'">
+    <label for="speed" class="col-sm-1 col-form-label">Средняя скорость: </label>
+    <div class="col-sm-2">
+      <input type="text" readonly class="form-control-plaintext" id="speed" [value]="speed + ' симв/сек'">
     </div>
-  </div>
-  <div class="form-group row">
     <label for="timer" class="col-sm-2 col-form-label">Время выполнения: </label>
     <div class="col-sm-1">
       <input type="text" readonly class="form-control-plaintext" id="timer" [value]="minutes+':'+seconds">
     </div>
+    <label for="symbols" class="col-sm-2 col-form-label">Введено символов: </label>
+    <div class="col-sm-1">
+      <input type="text" readonly class="form-control-plaintext" id="symbols" [value]="symbolCount+'/'+allSymbols">
+    </div>
   </div>
-  <p>Введено символов</p>
-  <div>
-      <input class="container-fluid input-margin text-center font" [readOnly]="true" [value]="exercise">
+  <div class="form-group row">
+    <input class="container-fluid input-margin  font" [readOnly]="true" [value]="exWords">
   </div>
   <div class="simple-keyboard hg-button" [hidden]="hidden"></div>
   <button class="btn btn-outline-secondary input-margin float-left btn-min" onclick="this.blur()"

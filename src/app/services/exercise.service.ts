@@ -2,6 +2,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Exercise} from "../models/exercise";
 import {Injectable} from "@angular/core";
+
 @Injectable()
 export class ExerciseService {
   constructor(private http: HttpClient) {

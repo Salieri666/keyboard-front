@@ -2,6 +2,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Difficulty} from "../models/difficulty";
 import {Injectable} from "@angular/core";
+
 @Injectable()
 export class DifficultyService {
 
