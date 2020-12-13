@@ -44,23 +44,22 @@ export class LoginComponent implements OnInit {
   }
 
   public registration() {
-    /*if (this.passwordCheck.length >= 4 && this.passwordCheck.length <= 12 &&
+    if (this.passwordCheck.length >= 4 && this.passwordCheck.length <= 12 &&
       this.credentials.username.length >= 4 && this.credentials.username.length <= 8 && this.credentials.password === this.passwordCheck) {
       const specialcharRegex = new RegExp('[!@#$%^&*(),.?\":{}|<>]');
       if (!specialcharRegex.test(this.passwordCheck) && !specialcharRegex.test(this.credentials.username)) {
+        this.auth.registration(new RegistrationDto(this.credentials.username, this.credentials.password, 'USER')).subscribe(() => {
+            console.log('success');
+          },
+          error => {
+            console.log(error);
+          }
+        );
         this.credentials.password = '';
         this.passwordCheck = '';
         this.register = false;
       }
-    }*/
-    this.auth.registration(new RegistrationDto(this.credentials.username, this.credentials.password, 'USER')).subscribe(data => {
-       console.log('success');
-       this.register = false;
-      },
-      error => {
-        this.register = false;
-        console.log(error);
-      }
-    );
+    }
+
   }
 }
