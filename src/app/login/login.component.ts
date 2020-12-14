@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthserviceService} from '../auth/authservice.service';
 import {Router} from '@angular/router';
 import {RegistrationDto} from '../auth/RegistrationDto';
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    this.popupMSG = "Вход выполнен успешно";
-    this.popupTitle = "Операция выполнена";
+    this.popupMSG = 'Вход выполнен успешно';
+    this.popupTitle = 'Операция выполнена';
     if (this.credentials.username.length >= 4 && this.credentials.username.length <= 8) {
       if (this.credentials.password.length >= 4 && this.credentials.password.length <= 12) {
         const specialcharRegex = new RegExp('[!@#$%^&*(),.?\":{}|<>]');
@@ -40,20 +40,20 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('userId', value.id);
             this.router.navigate(['help']);
           }, () => {
-            this.popupMSG = "Ошибка входа";
-            this.popupTitle = "Ошибка";
+            this.popupMSG = 'Ошибка входа';
+            this.popupTitle = 'Ошибка';
           });
         } else {
-          this.popupMSG = "Логин и пароль не должны содержать специальных символов";
-          this.popupTitle = "Ошибка";
+          this.popupMSG = 'Логин и пароль не должны содержать специальных символов';
+          this.popupTitle = 'Ошибка';
         }
       } else {
-        this.popupMSG = "Длина пароля должна быть от 4 до 12 символов";
-        this.popupTitle = "Ошибка";
+        this.popupMSG = 'Длина пароля должна быть от 4 до 12 символов';
+        this.popupTitle = 'Ошибка';
       }
     } else {
-      this.popupMSG = "Имя пользователя должно содержать от 4 до 8 символов";
-      this.popupTitle = "Ошибка";
+      this.popupMSG = 'Имя пользователя должно содержать от 4 до 8 символов';
+      this.popupTitle = 'Ошибка';
     }
     this.authenticated = this.auth.islogin;
   }
@@ -64,8 +64,8 @@ export class LoginComponent implements OnInit {
   }
 
   public registration() {
-    this.popupMSG = "Регистрация выполнена успешно";
-    this.popupTitle = "Операция выполнена";
+    this.popupMSG = 'Регистрация выполнена успешно';
+    this.popupTitle = 'Операция выполнена';
     if (this.credentials.username.length >= 4 && this.credentials.username.length <= 8) {
       if (this.credentials.password.length >= 4 && this.credentials.password.length <= 12) {
         if (this.credentials.password === this.passwordCheck) {
@@ -74,28 +74,28 @@ export class LoginComponent implements OnInit {
             this.auth.registration(new RegistrationDto(this.credentials.username, this.credentials.password, 'USER')).subscribe(() => {
               },
               () => {
-                this.popupMSG = "Пользователь с таким именем уже существует";
-                this.popupTitle = "Ошибка";
+                this.popupMSG = 'Пользователь с таким именем уже существует';
+                this.popupTitle = 'Ошибка';
               }
             );
             this.credentials.password = '';
             this.passwordCheck = '';
             this.register = false;
           } else {
-            this.popupMSG = "Логин и пароль не должны содержать специальных символов";
-            this.popupTitle = "Ошибка";
+            this.popupMSG = 'Логин и пароль не должны содержать специальных символов';
+            this.popupTitle = 'Ошибка';
           }
         } else {
-          this.popupMSG = "Неправильно введена проверка пароля";
-          this.popupTitle = "Ошибка";
+          this.popupMSG = 'Неправильно введена проверка пароля';
+          this.popupTitle = 'Ошибка';
         }
       } else {
-        this.popupMSG = "Длина пароля должна быть от 4 до 12 символов";
-        this.popupTitle = "Ошибка";
+        this.popupMSG = 'Длина пароля должна быть от 4 до 12 символов';
+        this.popupTitle = 'Ошибка';
       }
     } else {
-      this.popupMSG = "Имя пользователя должно содержать от 4 до 8 символов";
-      this.popupTitle = "Ошибка";
+      this.popupMSG = 'Имя пользователя должно содержать от 4 до 8 символов';
+      this.popupTitle = 'Ошибка';
     }
   }
 
