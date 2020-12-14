@@ -13,6 +13,8 @@ export class StatisticsComponent implements OnInit {
   ngOnInit() {
     if (!this.auth.islogin)
       this.router.navigate(['/login']);
+    else
+      this.login = localStorage.getItem('username');
   }
 
   constructor(private auth: AuthserviceService,
