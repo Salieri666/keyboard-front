@@ -20,12 +20,13 @@
                                                                        name="passwordCheck"
                                                                        [(ngModel)]="passwordCheck"/>
     </div>
+    <div class="container row justify-content-center">
     <button class="btn-min btn btn-outline-info" (click)="login(); open(mymodal)" [hidden]="register">Войти</button>
     <button class="btn-min btn btn-outline-info" (click)="register=!register" [hidden]="!register">Вход</button>
     <button class="btn-min btn btn-outline-info" [hidden]="register" (click)="register=!register">Регистрация</button>
     <button class="btn-min btn btn-outline-info" [hidden]="!register" (click)="registration(); open(mymodal)">
       Зарегистрироваться
-    </button>
+    </button></div>
   </form>
 
   <div class="container row justify-content-center" [hidden]="!authenticated">

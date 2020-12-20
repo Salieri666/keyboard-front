@@ -114,6 +114,7 @@ export class TrainComponent implements OnInit {
   pressTimer() {
     this.pressInterval = setInterval(() => {
       this.errorCount++;
+      this.symbolCount++;
       if (this.exWords.length === 0 || this.errorCount > this.maxErrors) {
         this.pauseTimer();
         this.stopPressTimer();
