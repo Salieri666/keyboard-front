@@ -16,6 +16,9 @@ export class LoginComponent implements OnInit {
   register: boolean = false;
   authenticated: boolean = false;
 
+  username: string;
+  role: any;
+
 
   constructor(private auth: AuthserviceService,
               private router: Router, private modalService: NgbModal) {
@@ -23,6 +26,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.authenticated = this.auth.islogin;
+    if (this.auth.islogin) {
+      this.username = localStorage.getItem('username');
+      this.role = localStorage.getItem('userRole');
+    }
   }
 
   public login() {
@@ -111,13 +118,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private
-
-  getDismissReason(reason
-                     :
-                     any
-  ):
-    string {
+  private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

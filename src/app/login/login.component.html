@@ -28,6 +28,13 @@
     </button>
   </form>
 
+  <div class="form-group row justify-content-center" [hidden]="!authenticated">
+    <label for="login" class="col-sm-2 col-form-label">Логин пользователя: </label>
+    <div class="col-sm-2">
+      <input type="text" readonly class="form-control-plaintext" id="login" [(ngModel)]="username">
+    </div>
+  </div>
+
   <div class="container row justify-content-center" [hidden]="!authenticated">
     <h5 class="container row justify-content-center">Нажмите, чтобы выйти из приложения</h5>
     <button class="btn btn-info" (click)="logout()">Выйти</button>
