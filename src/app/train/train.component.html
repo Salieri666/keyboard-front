@@ -1,4 +1,4 @@
-<div class="container justify-content-center">
+<div class="container justify-content-center" [hidden]="end">
   <div class="form-group row">
     <label for="errorCount" class="col-sm-2 col-form-label">Количество ошибок: </label>
     <div class="col-sm-1">
@@ -24,7 +24,16 @@
   <button class="btn btn-outline-secondary input-margin float-left btn-min" onclick="this.blur()"
           (click)="hidden=!hidden">Toggle Keyboard
   </button>
+  <h6>{{symbolCount}}</h6>
   <button class="btn btn-outline-secondary input-margin float-right btn-min" onclick="this.blur()" (click)="start()">
     Start
   </button>
+</div>
+<div class="container" [hidden]="!end">
+  <h6>Результат упражнения:</h6>
+  <h6>{{message}}</h6>
+  <h6>Количество ошибок: {{errorCount}}</h6>
+  <div class="container row justify-content-center">
+    <button class="btn btn-outline-info justify-content-center" (click)="OK()">OK</button>
+  </div>
 </div>
