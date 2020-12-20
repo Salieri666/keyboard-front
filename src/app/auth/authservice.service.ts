@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Info} from './Info';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
@@ -11,10 +11,11 @@ import {RegistrationDto} from './RegistrationDto';
 })
 export class AuthserviceService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   public login(user, pass) {
-    const body = { username: user, password: pass };
+    const body = {username: user, password: pass};
     return this.http.post<Info>(environment.apiUrl + '/api/login', body).pipe(
       catchError(err => {
         return throwError(err);

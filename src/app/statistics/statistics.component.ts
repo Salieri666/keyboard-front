@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartDataSets} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
-import {AuthserviceService} from "../auth/authservice.service";
-import {Router} from "@angular/router";
+import {AuthserviceService} from '../auth/authservice.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +11,11 @@ import {Router} from "@angular/router";
 })
 export class StatisticsComponent implements OnInit {
   ngOnInit() {
-    if (!this.auth.islogin)
+    if (!this.auth.islogin) {
       this.router.navigate(['/login']);
+    } else {
+      this.login = localStorage.getItem('username');
+    }
   }
 
   constructor(private auth: AuthserviceService,

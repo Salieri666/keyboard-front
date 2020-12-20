@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthserviceService} from "../auth/authservice.service";
-import {Router} from "@angular/router";
+import {AuthserviceService} from '../auth/authservice.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +9,9 @@ import {Router} from "@angular/router";
 })
 export class HelpComponent implements OnInit {
   ngOnInit() {
-    if (!this.auth.islogin)
+    if (!this.auth.islogin) {
       this.router.navigate(['/login']);
+    }
   }
 
   constructor(private auth: AuthserviceService,

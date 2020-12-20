@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
@@ -11,7 +11,8 @@ import {AuthserviceService} from './authservice.service';
 export class CustomHttpInterceptorService implements HttpInterceptor {
 
   constructor(private auth: AuthserviceService,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.auth.islogin) {
