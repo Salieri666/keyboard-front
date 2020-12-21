@@ -29,7 +29,8 @@
     <tbody>
     <tr *ngFor="let exercise of filtered">
       <td>{{exercise.id}}</td>
-      <td>{{exercise.levelId}}</td>
+      <td>{{difficulties[exercise.levelId-1].name}}</td>
+
       <td>
         <button class="btn btn-outline-info" (click)="router.navigate(['/train/'+exercise.id])">Выбрать</button>
       </td>

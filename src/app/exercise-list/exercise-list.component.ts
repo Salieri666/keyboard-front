@@ -25,11 +25,16 @@ export class ExerciseListComponent implements OnInit {
     if (!this.auth.islogin) {
       this.router.navigate(['/login']);
     } else {
-      this.httpExService.getAll().subscribe((data: Exercise[]) => {
-        this.exercises = data;
-        this.filtered = data;
+      this.httpDifService.getAll().subscribe((data: Difficulty[]) => {
+        this.difficulties = data;
+        this.httpExService.getAll().subscribe((data: Exercise[]) => {
+          this.exercises = data;
+          this.filtered = data;
+
+        });
       });
-      this.httpDifService.getAll().subscribe((data: Difficulty[]) => this.difficulties = data);
+
+
     }
   }
 

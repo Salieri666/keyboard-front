@@ -2,6 +2,8 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Statistic} from "../models/statistic";
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs";
 
 @Injectable()
 export class StatisticService {

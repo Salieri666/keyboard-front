@@ -149,7 +149,8 @@ export class TrainComponent implements OnInit {
     this.stopPressTimer();
     this.keyboard.destroy();
 
-    this.filtered = this.statistics.filter(statistic => statistic.userId === parseInt(localStorage.getItem('userId')) && statistic.exerciseId === this.id);
+    this.filtered = this.statistics.filter(statistic => statistic.userId === parseInt(localStorage.getItem('userId'))
+      && statistic.exerciseId === this.id);
 
     if (this.filtered[0] === undefined) {
       this.newStat.userId = parseInt(localStorage.getItem('userId'));
@@ -162,7 +163,7 @@ export class TrainComponent implements OnInit {
       if (this.failure)
         this.newStat.numberOfFailures = 1;
       else this.newStat.numberOfFailures = 0;
-      this.httpStatService.update(this.newStat).subscribe();
+      this.httpStatService.save(this.newStat).subscribe();
     }
     this.end = true;
     this.inprogress = false;
