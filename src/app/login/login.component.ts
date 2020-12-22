@@ -3,6 +3,7 @@ import {AuthserviceService} from '../auth/authservice.service';
 import {Router} from '@angular/router';
 import {RegistrationDto} from '../auth/RegistrationDto';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {GlobalValService} from '../services/global-val.service';
 
 @Component({
   selector: 'app-root',
@@ -21,10 +22,12 @@ export class LoginComponent implements OnInit {
 
 
   constructor(private auth: AuthserviceService,
-              private router: Router, private modalService: NgbModal) {
+              private router: Router,
+              private modalService: NgbModal,
+              private globalValService: GlobalValService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void{
     this.authenticated = this.auth.islogin;
     if (this.auth.islogin) {
       this.username = localStorage.getItem('username');
@@ -45,6 +48,17 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('userRole', value.role);
             localStorage.setItem('userLevelId', value.levelId);
             localStorage.setItem('userId', value.id);
+
+            this.globalValService.setHiddenState(true);
+
+            if (value.role == 'ADMIN') {
+              this.globalValService.setHiddenByRoleAdmin(true);
+              this.globalValService.setHiddenByRoleUser(false);
+            } else {
+              this.globalValService.setHiddenByRoleAdmin(false);
+              this.globalValService.setHiddenByRoleUser(true);
+            }
+
             this.router.navigate(['help']);
           }, () => {
             this.popupMSG = 'Ошибка входа';
@@ -68,6 +82,9 @@ export class LoginComponent implements OnInit {
   public logout() {
     this.auth.logout();
     this.authenticated = false;
+    this.globalValService.setHiddenState(false);
+    this.globalValService.setHiddenByRoleAdmin(false);
+    this.globalValService.setHiddenByRoleUser(false);
   }
 
   public registration() {
