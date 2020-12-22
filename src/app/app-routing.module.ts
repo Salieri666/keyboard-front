@@ -1,5 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
+import {ExercisesComponent} from './exercises/exercises.component';
+import {UsersComponent} from './users/users.component';
 
 const routes: Routes = [
   {
@@ -19,7 +21,9 @@ const routes: Routes = [
   },
   {
     path: 'list', loadChildren: () => import('./exercise-list/exercise-list.module').then(m => m.ExerciseListModule)
-  }
+  },
+  { path: 'exercises', component: ExercisesComponent},
+  { path: 'users', component: UsersComponent}
 ];
 
 @NgModule({
