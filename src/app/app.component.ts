@@ -6,7 +6,7 @@ import {GlobalValService} from './services/global-val.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'keyboard-front';
   isHidden = false;
   isHiddenByRoleAdmin = false;
@@ -16,6 +16,17 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    if (localStorage.getItem("token")) {
+      if (localStorage.getItem("userRole") === 'ADMIN') {
+        this.globalVal.setHiddenByRoleAdmin(true);
+        this.globalVal.setHiddenByRoleUser(false);
+        this.globalVal.setHiddenState(true);
+      } else if (localStorage.getItem("userRole") === 'USER') {
+        this.globalVal.setHiddenByRoleAdmin(false);
+        this.globalVal.setHiddenByRoleUser(true);
+        this.globalVal.setHiddenState(true);
+      }
+    }
     this.globalVal.getHiddenState().subscribe(value => this.isHidden = value);
     this.globalVal.getHiddenByRoleAdmin().subscribe(value => this.isHiddenByRoleAdmin = value);
     this.globalVal.getHiddenByRoleUser().subscribe(value => this.isHiddenByRoleUser = value);

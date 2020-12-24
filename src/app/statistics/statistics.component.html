@@ -15,7 +15,7 @@
   <div class="form-group row">
     <label for="winFail" class="col-sm-4 col-form-label">Успешных/Неуспешных: </label>
     <div class="col-sm-2">
-      <input type="text" readonly class="form-control-plaintext" id="winFail" [(ngModel)]="winFail">
+      <input type="text" readonly class="form-control-plaintext" id="winFail" [(ngModel)]="wins +'/' + fails">
     </div>
   </div>
   <div class="form-group row">
@@ -37,14 +37,14 @@
   <p class="text-center">Список выполненных упражнений</p>
   <div class="pre-scrollable list-h">
     <ul class="list-group">
-      <li class="list-group-item" *ngFor="let ex of exerciseW">{{ex}}</li>
+      <li class="list-group-item" *ngFor="let ex of completeExercises">{{ex}}</li>
     </ul>
   </div>
 
   <p class="text-center">Список проваленных упражнений</p>
   <div class="pre-scrollable list-h">
     <ul class="list-group">
-      <li class="list-group-item" *ngFor="let ex of exerciseF">{{ex}}</li>
+      <li class="list-group-item" *ngFor="let ex of failedExercises">{{ex}}</li>
     </ul>
   </div>
 </div>

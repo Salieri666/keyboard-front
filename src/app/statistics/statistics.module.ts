@@ -5,6 +5,7 @@ import {StatisticsRoutingModule} from "./statistics-routing.module";
 import {FormsModule} from "@angular/forms";
 import { ChartsModule } from 'ng2-charts';
 import {CommonModule} from "@angular/common";
+import {StatisticService} from "../services/statistic.service";
 @NgModule({
   declarations: [
     StatisticsComponent
@@ -15,7 +16,7 @@ import {CommonModule} from "@angular/common";
     ChartsModule,
     CommonModule
   ],
-  providers: [],
+  providers: [StatisticService],
   bootstrap: [StatisticsComponent]
 })
 export class StatisticsModule {

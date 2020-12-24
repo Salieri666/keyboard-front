@@ -45,7 +45,8 @@ export class TrainComponent implements OnInit {
           this.timePress = data.timePress;
         });
       });
-      this.httpStatService.getAll().subscribe((data: Statistic[]) => this.statistics = data);
+      this.httpStatService.getAll().subscribe((data: Statistic[]) => this.statistics = data.filter(statistic => statistic.userId == parseInt(localStorage.getItem('userId'))
+        && statistic.exerciseId == this.id));
     }
   }
 
@@ -131,11 +132,9 @@ export class TrainComponent implements OnInit {
       if (this.errorCount > this.maxErrors) {
         this.message = "Провал";
         this.complition();
-        //send stat
       } else if (this.exWords.length === 0) {
         this.message = "Успех";
         this.complition();
-        //send stat
       }
       this.changeColor();
     }, this.timePress * 1000);
@@ -149,10 +148,7 @@ export class TrainComponent implements OnInit {
     this.stopPressTimer();
     this.keyboard.destroy();
 
-    this.filtered = this.statistics.filter(statistic => statistic.userId === parseInt(localStorage.getItem('userId'))
-      && statistic.exerciseId === this.id);
-
-    if (this.filtered[0] === undefined) {
+    if (this.statistics[0] == undefined) {
       this.newStat.userId = parseInt(localStorage.getItem('userId'));
       this.newStat.exerciseId = this.id;
       this.newStat.avgSpeed = parseInt(this.speed);
@@ -164,6 +160,21 @@ export class TrainComponent implements OnInit {
         this.newStat.numberOfFailures = 1;
       else this.newStat.numberOfFailures = 0;
       this.httpStatService.save(this.newStat).subscribe();
+    } else {
+      this.newStat.id = this.statistics[0].id;
+      this.newStat.userId = parseInt(localStorage.getItem('userId'));
+      this.newStat.exerciseId = this.id;
+      this.newStat.avgSpeed = ((this.statistics[0].avgSpeed * this.statistics[0].numberOfExecutions) + parseInt(this.speed)) / (this.statistics[0].numberOfExecutions + 1); // 12.5*2 + avg ) / 3
+      this.newStat.dateExecution = new Date();
+      this.newStat.errors = this.errorCount;
+      if (this.statistics[0].maxSpeed < parseInt(this.speed))
+        this.newStat.maxSpeed = parseInt(this.speed);
+      else this.newStat.maxSpeed = this.statistics[0].maxSpeed;
+      this.newStat.numberOfExecutions = this.statistics[0].numberOfExecutions + 1;
+      if (this.failure)
+        this.newStat.numberOfFailures = this.statistics[0].numberOfFailures + 1;
+      else this.newStat.numberOfFailures = this.statistics[0].numberOfFailures;
+      this.httpStatService.update(this.newStat).subscribe();
     }
     this.end = true;
     this.inprogress = false;
@@ -187,11 +198,9 @@ export class TrainComponent implements OnInit {
       this.message = "Провал";
       this.failure = true;
       this.complition();
-      //send stat
     } else if (this.exWords.length === 0) {
       this.message = "Успех";
       this.complition();
-      //send stat
     } else {
       this.stopPressTimer();
       this.pressTimer();
