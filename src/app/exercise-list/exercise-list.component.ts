@@ -5,6 +5,8 @@ import {ExerciseService} from '../services/exercise.service';
 import {DifficultyService} from '../services/difficulty.service';
 import {Exercise} from '../models/exercise';
 import {Difficulty} from '../models/difficulty';
+import {Statistic} from "../models/statistic";
+import {StatisticService} from "../services/statistic.service";
 
 @Component({
   selector: 'app-root',
@@ -16,8 +18,9 @@ export class ExerciseListComponent implements OnInit {
   exercises: Exercise[] = [];
   filtered: Exercise[] = [];
   difficulties: Difficulty[] = [];
+  statistics: Statistic[] = [];
 
-  constructor(private httpExService: ExerciseService, private httpDifService: DifficultyService, private auth: AuthserviceService,
+  constructor(private httpExService: ExerciseService, private httpDifService: DifficultyService, private auth: AuthserviceService, private httpStatService: StatisticService,
               public router: Router) {
   }
 
@@ -30,7 +33,9 @@ export class ExerciseListComponent implements OnInit {
         this.httpExService.getAll().subscribe((data: Exercise[]) => {
           this.exercises = data;
           this.filtered = data;
-
+          this.httpStatService.getAll().subscribe((data: Statistic[]) => {
+            this.statistics = data;
+          })
         });
       });
 
@@ -40,5 +45,13 @@ export class ExerciseListComponent implements OnInit {
 
   filter(id: number) {
     this.filtered = this.exercises.filter(exercise => exercise.levelId === id);
+  }
+  stat: Statistic;
+  filterStat(id: number): string {
+    this.stat=this.statistics.filter(statistic => statistic.exerciseId === id && statistic.userId === parseInt(localStorage.getItem('userId')))[0];
+    if (this.stat!==undefined && this.stat.numberOfExecutions>this.stat.numberOfFailures)
+      return "Пройдено"
+    else
+      return "Не пройдено"
   }
 }
