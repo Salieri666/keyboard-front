@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private globalVal: GlobalValService) {
   }
 
-  ngOnInit(): void {
+  ngDoCheck(){
     if (localStorage.getItem("token") != undefined) {
       if (localStorage.getItem("userRole") === 'ADMIN') {
         this.globalVal.setHiddenByRoleAdmin(true);
@@ -27,6 +27,8 @@ export class AppComponent implements OnInit {
         this.globalVal.setHiddenState(true);
       }
     }
+  }
+  ngOnInit() {
     this.globalVal.getHiddenState().subscribe(value => this.isHidden = value);
     this.globalVal.getHiddenByRoleAdmin().subscribe(value => this.isHiddenByRoleAdmin = value);
     this.globalVal.getHiddenByRoleUser().subscribe(value => this.isHiddenByRoleUser = value);

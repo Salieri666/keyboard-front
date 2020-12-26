@@ -44,7 +44,11 @@ export class TestComponent implements OnInit {
               private router: Router) {
   }
 
-
+  ngOnDestroy(){
+    this.pauseTimer();
+    this.stopPressTimer();
+    this.keyboard.destroy();
+  }
   ngAfterViewInit() {
 
     const russian = {
@@ -117,11 +121,11 @@ export class TestComponent implements OnInit {
     this.interval = setInterval(() => {
       if (this.seconds < 59) {
         this.seconds++;
-        this.speed = (this.symbolCount / (this.minutes * 60 + this.seconds)).toFixed(2);
+        this.speed = ((this.symbolCount / (this.minutes * 60 + this.seconds))*60).toFixed(2);
       } else {
         this.minutes++;
         this.seconds = 0;
-        this.speed = (this.symbolCount / (this.minutes * 60 + this.seconds)).toFixed(2);
+        this.speed = ((this.symbolCount / (this.minutes * 60 + this.seconds))*60).toFixed(2);
       }
     }, 1000);
   }
@@ -157,7 +161,7 @@ export class TestComponent implements OnInit {
     this.stopPressTimer();
     this.keyboard.destroy();
     if (this.errorCount < this.maxErrors) {
-      this.recomendedLvl = this.allSymbols/ 400 / (this.errorCount + 1) * parseFloat(this.speed);
+      this.recomendedLvl = this.allSymbols/ 400 / (this.errorCount + 1) * parseFloat(this.speed)/60;
       if (this.recomendedLvl < 0.197) this.recomendedLvl = 1;
       else if (this.recomendedLvl >= 0.197 && this.recomendedLvl < 0.55) this.recomendedLvl = 2
       else if (this.recomendedLvl < 0.92 && this.recomendedLvl >= 0.55) this.recomendedLvl = 3

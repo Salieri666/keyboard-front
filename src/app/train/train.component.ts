@@ -55,6 +55,12 @@ export class TrainComponent implements OnInit {
     this.id = activateRoute.snapshot.params['id'];
   }
 
+  ngOnDestroy() {
+    this.pauseTimer();
+    this.stopPressTimer();
+    this.keyboard.destroy();
+  }
+
   ngAfterViewInit() {
     const russian = {
       default: [
@@ -125,10 +131,11 @@ export class TrainComponent implements OnInit {
     this.interval = setInterval(() => {
       if (this.seconds < 59) {
         this.seconds++;
-        this.speed = (this.symbolCount / (this.minutes * 60 + this.seconds)).toFixed(2);
+        this.speed = ((this.symbolCount / (this.minutes * 60 + this.seconds)) * 60).toFixed(2);
       } else {
         this.minutes++;
         this.seconds = 0;
+        this.speed = ((this.symbolCount / (this.minutes * 60 + this.seconds)) * 60).toFixed(2);
       }
     }, 1000);
   }
@@ -161,34 +168,45 @@ export class TrainComponent implements OnInit {
   complition() {
     this.pauseTimer();
     this.stopPressTimer();
-    this.keyboard.destroy();
 
     if (this.statistics[0] == undefined) {
       this.newStat.userId = parseInt(localStorage.getItem('userId'));
       this.newStat.exerciseId = this.id;
-      this.newStat.avgSpeed = parseInt(this.speed);
+
       this.newStat.dateExecution = new Date();
       this.newStat.errors = this.errorCount;
-      this.newStat.maxSpeed = parseInt(this.speed);
+
       this.newStat.numberOfExecutions = 1;
-      if (this.failure)
+      if (this.failure) {
         this.newStat.numberOfFailures = 1;
-      else this.newStat.numberOfFailures = 0;
+        this.newStat.maxSpeed = 0;
+        this.newStat.avgSpeed = 0;
+      } else {
+        this.newStat.numberOfFailures = 0;
+        this.newStat.maxSpeed = parseInt(this.speed);
+        this.newStat.avgSpeed = parseInt(this.speed);
+      }
       this.httpStatService.save(this.newStat).subscribe();
     } else {
       this.newStat.id = this.statistics[0].id;
       this.newStat.userId = parseInt(localStorage.getItem('userId'));
       this.newStat.exerciseId = this.id;
-      this.newStat.avgSpeed = ((this.statistics[0].avgSpeed * this.statistics[0].numberOfExecutions) + parseInt(this.speed)) / (this.statistics[0].numberOfExecutions + 1); // 12.5*2 + avg ) / 3
+      // 12.5*2 + avg ) / 3
       this.newStat.dateExecution = new Date();
       this.newStat.errors = this.errorCount;
-      if (this.statistics[0].maxSpeed < parseInt(this.speed))
-        this.newStat.maxSpeed = parseInt(this.speed);
-      else this.newStat.maxSpeed = this.statistics[0].maxSpeed;
+
       this.newStat.numberOfExecutions = this.statistics[0].numberOfExecutions + 1;
-      if (this.failure)
+      if (this.failure) {
+        this.newStat.avgSpeed = this.statistics[0].avgSpeed;
         this.newStat.numberOfFailures = this.statistics[0].numberOfFailures + 1;
-      else this.newStat.numberOfFailures = this.statistics[0].numberOfFailures;
+        this.newStat.maxSpeed = this.statistics[0].maxSpeed;
+      } else {
+        this.newStat.numberOfFailures = this.statistics[0].numberOfFailures;
+        this.newStat.avgSpeed = ((this.statistics[0].avgSpeed * this.statistics[0].numberOfExecutions) + parseInt(this.speed)) / (this.statistics[0].numberOfExecutions + 1);
+        if (this.statistics[0].maxSpeed < parseInt(this.speed))
+          this.newStat.maxSpeed = parseInt(this.speed);
+        else this.newStat.maxSpeed = this.statistics[0].maxSpeed;
+      }
       this.httpStatService.update(this.newStat).subscribe();
     }
     this.end = true;

@@ -1,10 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartDataSets} from 'chart.js';
-import {Color, Label} from 'ng2-charts';
+import {Color} from 'ng2-charts';
 import {AuthserviceService} from '../auth/authservice.service';
 import {Router} from '@angular/router';
 import {StatisticService} from "../services/statistic.service";
 import {Statistic} from "../models/statistic";
+import {DifficultyService} from "../services/difficulty.service";
+import {Difficulty} from "../models/difficulty";
+import {ExerciseService} from "../services/exercise.service";
+import {Exercise} from "../models/exercise";
 
 @Component({
   selector: 'app-root',
@@ -21,8 +25,8 @@ export class StatisticsComponent implements OnInit {
     }
   }
 
-  constructor(private auth: AuthserviceService, private httpStatService: StatisticService,
-              private router: Router) {
+  constructor(private auth: AuthserviceService, private httpStatService: StatisticService, private httpDifService: DifficultyService,
+              private httpExService: ExerciseService, private router: Router) {
   }
 
   login = "";
@@ -31,11 +35,16 @@ export class StatisticsComponent implements OnInit {
   fails = 0;
   allTimeErr = 0;
   allStat: Statistic[] = [];
+  difficulties: Difficulty[] = [];
   completeExercises: number[];
   failedExercises: number[];
+  avgSpeedArr: number[] = [];
+  maxSpeedArr: number[] = [];
+  exercisesIds: string[] = [];
 
   getStat() {
     this.httpStatService.getAll().subscribe((data: Statistic[]) => {
+      this.httpDifService.getAll().subscribe((data: Difficulty[]) => this.difficulties = data);
       this.allStat = data.filter(statistic => statistic.userId === parseInt(localStorage.getItem("userId")));
       this.exCompl = 0;
       this.wins = 0;
@@ -52,6 +61,12 @@ export class StatisticsComponent implements OnInit {
         } else {
           this.failedExercises.push(stat.exerciseId);
         }
+        this.avgSpeedArr.push(stat.avgSpeed);
+        this.maxSpeedArr.push(stat.maxSpeed);
+        this.httpExService.getID(stat.exerciseId).subscribe((data: Exercise) => {
+          this.exercisesIds.push(stat.exerciseId.toString() + ' (' + this.difficulties[data.levelId-1].name + ')');
+        })
+
       }
       this.wins = this.exCompl - this.fails;
     });
@@ -59,18 +74,22 @@ export class StatisticsComponent implements OnInit {
   }
 
   public lineChartData: ChartDataSets[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Упражнений в день'},
+    {data: this.avgSpeedArr, label: 'Статистика средней скорости по упражнениям'},
+    {data: this.maxSpeedArr, label: 'Статистика максимальной скорости по упражнениям'}
   ];
-  public lineChartLabels: Label[] = ['1', '2', '3', '4', '5', '6', '7'];
+  public lineChartLabels: string[] = this.exercisesIds;
   public lineChartColors: Color[] = [
     {
       borderColor: 'black',
       backgroundColor: 'rgba(255,255,0,0.3)',
     },
+    {
+      borderColor: 'black',
+      backgroundColor: 'rgba(255,0,0,0.3)',
+    }
   ];
   public lineChartLegend = true;
   public lineChartType = 'line';
   public lineChartPlugins = [];
-  public chartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7'];
 
 }

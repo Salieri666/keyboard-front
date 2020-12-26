@@ -6,7 +6,7 @@
     </div>
     <label for="speed" class="col-sm-1 col-form-label">Средняя скорость: </label>
     <div class="col-sm-2">
-      <input type="text" readonly class="form-control-plaintext" id="speed" [value]="speed + ' симв/сек'">
+      <input type="text" readonly class="form-control-plaintext" id="speed" [value]="speed + ' симв/мин'">
     </div>
     <label for="timer" class="col-sm-2 col-form-label">Время выполнения: </label>
     <div class="col-sm-1">
@@ -32,7 +32,7 @@
   <h6>Результат выполнения:</h6>
   <h6>{{message}}</h6>
   <h6>Количество ошибок: {{errorCount}}</h6>
-  <h6>Средняя скорость: {{speed}} симв/сек</h6>
+  <h6>Средняя скорость: {{speed}} симв/мин</h6>
   <h6>Рекомендуемая сложность: {{recomendedLvl}}</h6>
   <div class="container row justify-content-center">
     <button class="btn btn-outline-info justify-content-center" (click)="OK()">OK</button>

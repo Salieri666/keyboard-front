@@ -33,7 +33,7 @@
     <tr *ngFor="let exercise of filtered; let i = index">
       <td>{{i + 1}}</td>
       <td>{{difficulties[exercise.levelId - 1].name}}</td>
-      <td>{{filterStat(exercise.levelId)}}</td>
+      <td>{{filterStat(exercise.id)}}</td>
       <td>
         <button class="btn btn-outline-info" (click)="router.navigate(['/train/'+exercise.id])">Выбрать</button>
       </td>
