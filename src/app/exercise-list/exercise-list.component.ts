@@ -31,9 +31,9 @@ export class ExerciseListComponent implements OnInit {
       this.httpDifService.getAll().subscribe((data: Difficulty[]) => {
         this.difficulties = data;
         this.httpExService.getAll().subscribe((data: Exercise[]) => {
-          this.exercises = data;
-          this.filtered = data;
-          if(localStorage.getItem('userLevelId')!=="null"){
+          this.exercises = data.filter(exercise => exercise.levelId != null);
+          this.filtered = this.exercises;
+          if (localStorage.getItem('userLevelId') !== "null") {
             this.filter(parseInt(localStorage.getItem('userLevelId')));
           }
           this.httpStatService.getAll().subscribe((data: Statistic[]) => {
@@ -49,10 +49,12 @@ export class ExerciseListComponent implements OnInit {
   filter(id: number) {
     this.filtered = this.exercises.filter(exercise => exercise.levelId === id);
   }
+
   stat: Statistic;
+
   filterStat(id: number): string {
-    this.stat=this.statistics.filter(statistic => statistic.exerciseId == id && statistic.userId == parseInt(localStorage.getItem('userId')))[0];
-    if (this.stat!=undefined && this.stat.numberOfExecutions>this.stat.numberOfFailures)
+    this.stat = this.statistics.filter(statistic => statistic.exerciseId == id && statistic.userId == parseInt(localStorage.getItem('userId')))[0];
+    if (this.stat != undefined && this.stat.numberOfExecutions > this.stat.numberOfFailures)
       return "Пройдено"
     else
       return "Не пройдено"

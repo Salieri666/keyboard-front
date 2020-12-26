@@ -1,0 +1,60 @@
+.simple-keyboard {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.input-margin {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.btn-min {
+  min-width: 150px;
+}
+
+
+.simple-keyboard.hg-layout-default .hg-button.zone1 {
+  background: rgb(85, 0, 255, 0.5);
+  color: white;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.zone2 {
+  background: rgb(0, 0, 255, 0.5);
+  color: white;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.zone3 {
+  background: rgb(0, 155, 155, 0.5);
+  color: white;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.zone4 {
+  background: rgb(0, 155, 0, 0.5);
+  color: white;
+}
+
+
+.simple-keyboard.hg-layout-default .hg-button.space {
+  background: rgb(0, 100, 255, 0.7);
+  color: white;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.nextChar {
+  background: rgb(255, 0, 0, 0.7);
+  color: white;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.nextChar:active {
+  background: rgb(0, 255, 255, 0.5);
+  color: white;
+}
+
+
+.font{
+  padding-left: 50%;
+  font-family: "Courier New", Courier, serif;
+  font-size: 200%;
+}

@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token") != undefined) {
       if (localStorage.getItem("userRole") === 'ADMIN') {
         this.globalVal.setHiddenByRoleAdmin(true);
         this.globalVal.setHiddenByRoleUser(false);

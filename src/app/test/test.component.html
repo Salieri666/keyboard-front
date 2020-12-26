@@ -29,9 +29,11 @@
   </button>
 </div>
 <div class="container" [hidden]="!end">
-  <h6>Результат упражнения:</h6>
+  <h6>Результат выполнения:</h6>
   <h6>{{message}}</h6>
   <h6>Количество ошибок: {{errorCount}}</h6>
+  <h6>Средняя скорость: {{speed}} симв/сек</h6>
+  <h6>Рекомендуемая сложность: {{recomendedLvl}}</h6>
   <div class="container row justify-content-center">
     <button class="btn btn-outline-info justify-content-center" (click)="OK()">OK</button>
   </div>

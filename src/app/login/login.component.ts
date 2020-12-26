@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
               private globalValService: GlobalValService) {
   }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.authenticated = this.auth.islogin;
     if (this.auth.islogin) {
       this.username = localStorage.getItem('username');
@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    this.popupMSG = 'Вход выполнен успешно';
-    this.popupTitle = 'Операция выполнена';
+    this.popupMSG = '';
+    this.popupTitle = '';
     if (this.credentials.username.length >= 4 && this.credentials.username.length <= 8) {
       if (this.credentials.password.length >= 4 && this.credentials.password.length <= 12) {
         const specialcharRegex = new RegExp('[!@#$%^&*(),.?\":{}|<>]');
@@ -58,7 +58,8 @@ export class LoginComponent implements OnInit {
               this.globalValService.setHiddenByRoleAdmin(false);
               this.globalValService.setHiddenByRoleUser(true);
             }
-
+            this.popupMSG = 'Вход выполнен успешно';
+            this.popupTitle = 'Операция выполнена';
             this.router.navigate(['help']);
           }, () => {
             this.popupMSG = 'Ошибка входа';
@@ -88,14 +89,16 @@ export class LoginComponent implements OnInit {
   }
 
   public registration() {
-    this.popupMSG = 'Регистрация выполнена успешно';
-    this.popupTitle = 'Операция выполнена';
+    this.popupMSG = '';
+    this.popupTitle = '';
     if (this.credentials.username.length >= 4 && this.credentials.username.length <= 8) {
       if (this.credentials.password.length >= 4 && this.credentials.password.length <= 12) {
         if (this.credentials.password === this.passwordCheck) {
           const specialcharRegex = new RegExp('[!@#$%^&*(),.?\":{}|<>]');
           if (!specialcharRegex.test(this.credentials.password) && !specialcharRegex.test(this.credentials.username)) {
             this.auth.registration(new RegistrationDto(this.credentials.username, this.credentials.password, 'USER')).subscribe(() => {
+                this.popupMSG = 'Регистрация выполнена успешно';
+                this.popupTitle = 'Операция выполнена';
               },
               () => {
                 this.popupMSG = 'Пользователь с таким именем уже существует';

@@ -1,35 +1,30 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import Keyboard from 'simple-keyboard';
-import {AuthserviceService} from '../auth/authservice.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Exercise} from '../models/exercise';
-import {ExerciseService} from '../services/exercise.service';
-import {DifficultyService} from '../services/difficulty.service';
-import {Difficulty} from '../models/difficulty';
-import {Statistic} from "../models/statistic";
-import {StatisticService} from "../services/statistic.service";
+import Keyboard from "simple-keyboard";
+import {Exercise} from "../models/exercise";
+import {AuthserviceService} from "../auth/authservice.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ExerciseService} from "../services/exercise.service";
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-root',
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './train.component.html',
-  styleUrls: ['./train.component.scss', '../../../node_modules/simple-keyboard/build/css/index.css']
+  templateUrl: './test.component.html',
+  styleUrls: ['./test.component.scss', '../../../node_modules/simple-keyboard/build/css/index.css']
 })
-export class TrainComponent implements OnInit {
+export class TestComponent implements OnInit {
   value = '';
   keyboard: Keyboard;
   errorCount: number = 0;
-  maxErrors: number;
+  maxErrors: number = 10;
   exWords: string;
   symbolCount: number = 0;
   allSymbols: number;
-  id: number;
-  timePress: number;
-  statistics: Statistic[] = [];
-  newStat: Statistic = new Statistic();
+  id: number = 9997;
+  timePress: number = 3;
 
   OK() {
-    this.router.navigate(['/list']);
+    this.router.navigate(['/help']); //main
   }
 
   ngOnInit() {
@@ -39,23 +34,19 @@ export class TrainComponent implements OnInit {
       this.httpExService.getID(this.id).subscribe((data: Exercise) => {
         this.exWords = data.words;
         this.allSymbols = this.exWords.length;
-        this.httpDiffService.getID(data.levelId).subscribe((data: Difficulty) => {
-          this.maxErrors = data.maxErrors;
-          this.timePress = data.timePress;
-        });
       });
-      this.httpStatService.getAll().subscribe((data: Statistic[]) => this.statistics = data.filter(statistic => statistic.userId == parseInt(localStorage.getItem('userId'))
-        && statistic.exerciseId == this.id));
     }
   }
 
-  constructor(private auth: AuthserviceService, private httpDiffService: DifficultyService,
-              private activateRoute: ActivatedRoute, private httpExService: ExerciseService, private httpStatService: StatisticService,
+
+  constructor(private auth: AuthserviceService,
+              private activateRoute: ActivatedRoute, private httpExService: ExerciseService, private httpUserService: UserService,
               private router: Router) {
-    this.id = activateRoute.snapshot.params['id'];
   }
 
+
   ngAfterViewInit() {
+
     const russian = {
       default: [
         "\u0451 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
@@ -100,6 +91,7 @@ export class TrainComponent implements OnInit {
         }
       ]
     });
+
   }
 
   changeColor() {
@@ -129,6 +121,7 @@ export class TrainComponent implements OnInit {
       } else {
         this.minutes++;
         this.seconds = 0;
+        this.speed = (this.symbolCount / (this.minutes * 60 + this.seconds)).toFixed(2);
       }
     }, 1000);
   }
@@ -156,41 +149,21 @@ export class TrainComponent implements OnInit {
 
   }
 
-  filtered: Statistic[];
+
+  recomendedLvl: number = 1;
 
   complition() {
     this.pauseTimer();
     this.stopPressTimer();
     this.keyboard.destroy();
-
-    if (this.statistics[0] == undefined) {
-      this.newStat.userId = parseInt(localStorage.getItem('userId'));
-      this.newStat.exerciseId = this.id;
-      this.newStat.avgSpeed = parseInt(this.speed);
-      this.newStat.dateExecution = new Date();
-      this.newStat.errors = this.errorCount;
-      this.newStat.maxSpeed = parseInt(this.speed);
-      this.newStat.numberOfExecutions = 1;
-      if (this.failure)
-        this.newStat.numberOfFailures = 1;
-      else this.newStat.numberOfFailures = 0;
-      this.httpStatService.save(this.newStat).subscribe();
-    } else {
-      this.newStat.id = this.statistics[0].id;
-      this.newStat.userId = parseInt(localStorage.getItem('userId'));
-      this.newStat.exerciseId = this.id;
-      this.newStat.avgSpeed = ((this.statistics[0].avgSpeed * this.statistics[0].numberOfExecutions) + parseInt(this.speed)) / (this.statistics[0].numberOfExecutions + 1); // 12.5*2 + avg ) / 3
-      this.newStat.dateExecution = new Date();
-      this.newStat.errors = this.errorCount;
-      if (this.statistics[0].maxSpeed < parseInt(this.speed))
-        this.newStat.maxSpeed = parseInt(this.speed);
-      else this.newStat.maxSpeed = this.statistics[0].maxSpeed;
-      this.newStat.numberOfExecutions = this.statistics[0].numberOfExecutions + 1;
-      if (this.failure)
-        this.newStat.numberOfFailures = this.statistics[0].numberOfFailures + 1;
-      else this.newStat.numberOfFailures = this.statistics[0].numberOfFailures;
-      this.httpStatService.update(this.newStat).subscribe();
+    if (this.errorCount < this.maxErrors) {
+      this.recomendedLvl = this.allSymbols/ 400 / (this.errorCount + 1) * parseFloat(this.speed);
+      if (this.recomendedLvl < 0.197) this.recomendedLvl = 1;
+      else if (this.recomendedLvl >= 0.197 && this.recomendedLvl < 0.55) this.recomendedLvl = 2
+      else if (this.recomendedLvl < 0.92 && this.recomendedLvl >= 0.55) this.recomendedLvl = 3
+      else if (this.recomendedLvl >= 0.92) this.recomendedLvl = 4
     }
+    this.httpUserService.changeLevel(this.recomendedLvl);
     this.end = true;
     this.inprogress = false;
   }
@@ -201,8 +174,11 @@ export class TrainComponent implements OnInit {
 
   failure = false;
   end = false;
-  message = '';
+  message = 'Тест пройден';
   onKeyPress = (button: string) => {
+    if (button === '{shift}' || button === '{lock}') {
+      this.handleShift();
+    }
     if (this.exWords.length > 0 && this.exWords[0] != button.replace('{space}', ' ')) {
       this.errorCount++;
     }
@@ -210,11 +186,9 @@ export class TrainComponent implements OnInit {
     this.symbolCount++;
 
     if (this.errorCount > this.maxErrors) {
-      this.message = "Провал";
       this.failure = true;
       this.complition();
     } else if (this.exWords.length === 0) {
-      this.message = "Успех";
       this.complition();
     } else {
       this.stopPressTimer();
@@ -223,9 +197,7 @@ export class TrainComponent implements OnInit {
     /**
      * If you want to handle the shift and caps lock buttons
      */
-    //  if (button === '{shift}' || button === '{lock}') {
-    //   this.handleShift();
-    // }
+
 
   };
 
@@ -238,6 +210,7 @@ export class TrainComponent implements OnInit {
       layoutName: shiftToggle
     });
   };
+
 
   start() {
     if (!this.inprogress) {
