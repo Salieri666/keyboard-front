@@ -127,7 +127,9 @@ export class ExercisesComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+  add(){
 
+  }
   page = 1;
   pageSize = 5;
 

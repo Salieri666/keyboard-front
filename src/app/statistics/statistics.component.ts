@@ -69,7 +69,7 @@ export class StatisticsComponent implements OnInit {
             }
             this.avgSpeedArr.push(stat.avgSpeed);
             this.maxSpeedArr.push(stat.maxSpeed);
-            this.exercisesIds.push(stat.exerciseId.toString() + ' (' + this.difficulties.filter(dif => dif.id ==
+            this.exercisesIds.push(data.filter(ex=>ex.id==stat.exerciseId)[0].name + ' (' + this.difficulties.filter(dif => dif.id ==
               this.allUserExercises.filter(ex => ex.id == stat.exerciseId)[0].levelId)[0].name + ')');
             this.wins = this.exCompl - this.fails;
           }
