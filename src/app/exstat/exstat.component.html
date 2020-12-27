@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row justify-content-between leftmargin">
+    <h6>Название упражнения: {{exercise.name}}</h6><h6>Количество выполнений: {{executionCount}}</h6></div>
+  <div class="row justify-content-between leftmargin">
+    <h6>Количество зон: {{exDiff.zoneId}}</h6><h6>Количество неудач: {{failCount}}</h6></div>
+  <h6>Максимальное количество ошибок: {{exDiff.maxErrors}}</h6>
+  <h6>Минимальная длина: {{exDiff.minLength}} символов</h6>
+  <h6>Максимальная длина: {{exDiff.maxLength}} символов</h6>
+  <p class="text-center aligntop">Список выполневших упражнение</p>
+  <div class="pre-scrollable list-h">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let user of usersCompleted">{{user}}</li>
+    </ul>
+  </div>
+
+  <p class="text-center">Список проваливших упражнение</p>
+  <div class="pre-scrollable list-h">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let user of usersFailed">{{user}}</li>
+    </ul>
+  </div>
+</div>

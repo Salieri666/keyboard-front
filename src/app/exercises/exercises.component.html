@@ -19,7 +19,7 @@
     <tr *ngFor="let exercise of filtered | slice: (page-1) * pageSize : page * pageSize ; let i = index">
       <td>{{exercise.name}} ({{difficulty(exercise.levelId)}})</td>
       <td>
-        <button class="btn btn-outline-info" (click)="router.navigate(['/ex/stat'])">Статистика</button>
+        <button class="btn btn-outline-info" (click)="router.navigate(['/exstat/'+exercise.id])">Статистика</button>
       </td>
       <td>
         <button class="btn btn-outline-info" (click)="open(mymodal, exercise.id, 'change')">Изменить</button>

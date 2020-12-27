@@ -21,4 +21,7 @@ export class UserService {
       localStorage.setItem('userLevelId', level.toString());
     }
   }
+  getAll(){
+    return this.http.get(environment.apiUrl+"/user/getAllUsers");
+  }
 }

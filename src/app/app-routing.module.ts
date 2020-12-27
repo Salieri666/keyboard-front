@@ -20,7 +20,8 @@ const routes: Routes = [
   },
   {path: 'test', loadChildren: () => import('./test/test.module').then(m => m.TestModule)},
   {path: 'main', loadChildren: () => import('./mainpage/mainpage.module').then(m => m.MainpageModule)},
-  {path: 'exercises', loadChildren: () => import('./exercises/exercises.module').then(m => m.ExercisesModule)}, //втф???
+  {path: 'exercises', loadChildren: () => import('./exercises/exercises.module').then(m => m.ExercisesModule)},
+  {path: 'exstat/:id', loadChildren: () => import('./exstat/exstat.module').then(m => m.ExstatModule)},
   {path: 'users', component: UsersComponent},
   {
     path: '**', redirectTo: 'main'
