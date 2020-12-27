@@ -1,1 +1,92 @@
-Test
+<div class="container">
+  <table class="table table-striped table-margin" style="overflow-x: scroll">
+    <thead>
+    <tr>
+      <th>
+        Упражнение (Сложность)
+      </th>
+      <th>
+
+      </th>
+      <th>
+
+      </th>
+      <th>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let exercise of filtered | slice: (page-1) * pageSize : page * pageSize ; let i = index">
+      <td>{{exercise.id}} ({{difficulty(exercise.levelId)}})</td>
+      <td>
+        <button class="btn btn-outline-info" (click)="router.navigate(['/ex/stat'])">Статистика</button>
+      </td>
+      <td>
+        <button class="btn btn-outline-info" (click)="open(mymodal, exercise.id)">Изменить</button>
+      </td>
+      <td>
+        <button class="btn btn-outline-info" (click)="openDelete(deletemodal, exercise.id)">Удалить</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <ngb-pagination
+    [(page)]="page"
+    [pageSize]="pageSize"
+    [collectionSize]="filtered.length" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+</div>
+
+<ng-template #mymodal let-modal>
+  <div class="modal-footer justify-content-center">
+    <div class="container row justify-content-end">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="sizeLeft marginTop">
+      <button class="btn btn-outline-info aligntop btn-size" (click)="openFile()">Загрузить из файла<input type="file"
+                                                                                                           style="display:none"
+                                                                                                           accept=".txt" (change)="fileChanged($event)">
+      </button>
+      <button class="btn btn-outline-info aligntop btn-size" (click)="generate();">Сгенерировать</button>
+    </div>
+    <div class="sizeRight text-center">
+      <h6>Характеристики упражнения</h6>
+      <input type="text"
+             class="form-control inputstl aligntop" id="name" spellcheck="false"
+             name="passwordCheck" [(ngModel)]="exerciseName" placeholder="Название">
+      <h6 class="container aligntop">Уровень сложности:</h6>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-info" id="dropdownBasic1" ngbDropdownToggle>{{currentDiff}}</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <span *ngFor="let difficulty of difficulties">
+          <button ngbDropdownItem (click)="changeDif(difficulty.id)">{{difficulty.name}}</button>
+            </span>
+        </div>
+      </div>
+      <h6 class="container text-center aligntop">Текст упражнения:</h6>
+      <div class="container row"><textarea spellcheck="false" type="text" placeholder="Текст упражнения"
+                                           [(ngModel)]="exerciseWords"></textarea>
+      </div>
+      <button type="button" class="btn btn-outline-info aligntop"
+              (click)="change();modal.close('Save click');">Принять
+      </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #deletemodal let-modal>
+  <div class="modal-footer justify-content-center text-center">
+    <div class="container row justify-content-end">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="container">
+      <h5 class="text-center">Вы уверены?</h5></div>
+    <div class="row text-center">
+      <button type="button" class="btn btn-outline-info aligntop" (click)="modal.close('Delete')">Удалить</button>
+      <button type="button" class="btn btn-outline-info aligntop marginLeft" (click)="modal.close('Cancel')">Отмена
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -23,6 +23,9 @@ export class ExerciseService {
   getByUserID(id: number) {
     return this.http.get(environment.apiUrl + '/exercise/getExecutedExercisesByUser/' + id);
   }
+  getRandomExercise(){
+    return this.http.get(environment.apiUrl+'/exercise/getRandomExercise');
+  }
   update(exercise: Exercise) {
     return this.http.post(environment.apiUrl + '/exercise/updateExercise', exercise);
   }

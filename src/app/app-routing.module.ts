@@ -1,12 +1,8 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {ExercisesComponent} from './exercises/exercises.component';
 import {UsersComponent} from './users/users.component';
 
 const routes: Routes = [
-  {
-    path: '', redirectTo: 'login', pathMatch: 'full'
-  },
   {
     path: 'train/:id', loadChildren: () => import('./train/train.module').then(m => m.TrainModule)
   },
@@ -24,8 +20,11 @@ const routes: Routes = [
   },
   {path: 'test', loadChildren: () => import('./test/test.module').then(m => m.TestModule)},
   {path: 'main', loadChildren: () => import('./mainpage/mainpage.module').then(m => m.MainpageModule)},
-  {path: 'exercises', component: ExercisesComponent}, //втф???
-  {path: 'users', component: UsersComponent}
+  {path: 'exercises', loadChildren: () => import('./exercises/exercises.module').then(m => m.ExercisesModule)}, //втф???
+  {path: 'users', component: UsersComponent},
+  {
+    path: '**', redirectTo: 'main'
+  },
 ];
 
 @NgModule({
