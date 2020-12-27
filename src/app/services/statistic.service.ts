@@ -20,6 +20,9 @@ export class StatisticService {
   getID(id: number) {
     return this.http.get(environment.apiUrl + '/statistic/getStatistic/' + id);
   }
+  getByUserID(id: number) {
+    return this.http.get(environment.apiUrl + '/statistic/getStatisticByUser/' + id);
+  }
 
   update(statistic: Statistic) {
     return this.http.post(environment.apiUrl + '/statistic/updateStatistic', statistic);

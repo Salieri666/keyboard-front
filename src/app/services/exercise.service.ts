@@ -20,6 +20,9 @@ export class ExerciseService {
     return this.http.get(environment.apiUrl + '/exercise/getExercise/' + id);
   }
 
+  getByUserID(id: number) {
+    return this.http.get(environment.apiUrl + '/exercise/getExecutedExercisesByUser/' + id);
+  }
   update(exercise: Exercise) {
     return this.http.post(environment.apiUrl + '/exercise/updateExercise', exercise);
   }

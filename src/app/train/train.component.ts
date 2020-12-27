@@ -44,8 +44,8 @@ export class TrainComponent implements OnInit {
           this.timePress = data.timePress;
         });
       });
-      this.httpStatService.getAll().subscribe((data: Statistic[]) => this.statistics = data.filter(statistic => statistic.userId == parseInt(localStorage.getItem('userId'))
-        && statistic.exerciseId == this.id));
+      this.httpStatService.getByUserID(parseInt(localStorage.getItem('userId'))).subscribe(
+        (data: Statistic[]) => this.statistics = data.filter(statistic=>statistic.exerciseId == this.id));
     }
   }
 

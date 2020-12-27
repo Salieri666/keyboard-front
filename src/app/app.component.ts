@@ -14,7 +14,9 @@ export class AppComponent implements OnInit {
 
   constructor(private globalVal: GlobalValService) {
   }
-
+  ngOnChanges(){
+    this.ngDoCheck();
+  }
   ngDoCheck(){
     if (localStorage.getItem("token") != undefined) {
       if (localStorage.getItem("userRole") === 'ADMIN') {

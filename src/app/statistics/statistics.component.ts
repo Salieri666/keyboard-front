@@ -36,39 +36,46 @@ export class StatisticsComponent implements OnInit {
   allTimeErr = 0;
   allStat: Statistic[] = [];
   difficulties: Difficulty[] = [];
-  completeExercises: number[];
-  failedExercises: number[];
+  completeExercises: string[];
+  failedExercises: string[];
   avgSpeedArr: number[] = [];
   maxSpeedArr: number[] = [];
+  allUserExercises: Exercise[] = [];
   exercisesIds: string[] = [];
 
   getStat() {
-    this.httpStatService.getAll().subscribe((data: Statistic[]) => {
-      this.httpDifService.getAll().subscribe((data: Difficulty[]) => this.difficulties = data);
-      this.allStat = data.filter(statistic => statistic.userId === parseInt(localStorage.getItem("userId")));
-      this.exCompl = 0;
-      this.wins = 0;
-      this.fails = 0;
-      this.allTimeErr = 0;
-      this.completeExercises = [];
-      this.failedExercises = [];
-      for (let stat of this.allStat) {
-        this.exCompl += stat.numberOfExecutions;
-        this.allTimeErr += stat.errors;
-        this.fails += stat.numberOfFailures;
-        if (stat.numberOfFailures < stat.numberOfExecutions) {
-          this.completeExercises.push(stat.exerciseId);
-        } else {
-          this.failedExercises.push(stat.exerciseId);
-        }
-        this.avgSpeedArr.push(stat.avgSpeed);
-        this.maxSpeedArr.push(stat.maxSpeed);
-        this.httpExService.getID(stat.exerciseId).subscribe((data: Exercise) => {
-          this.exercisesIds.push(stat.exerciseId.toString() + ' (' + this.difficulties[data.levelId-1].name + ')');
-        })
+    this.httpStatService.getByUserID(parseInt(localStorage.getItem("userId"))).subscribe((data: Statistic[]) => {
+      this.allStat = data;
+      this.httpDifService.getAll().subscribe((data: Difficulty[]) => {
+        this.difficulties = data;
+        this.exCompl = 0;
+        this.wins = 0;
+        this.fails = 0;
+        this.allTimeErr = 0;
+        this.completeExercises = [];
+        this.failedExercises = [];
+        this.httpExService.getByUserID(parseInt(localStorage.getItem("userId"))).subscribe((data: Exercise[]) => {
+          this.allUserExercises = data;
+          for (let stat of this.allStat) {
+            this.exCompl += stat.numberOfExecutions;
+            this.allTimeErr += stat.errors;
+            this.fails += stat.numberOfFailures;
+            if (stat.numberOfFailures < stat.numberOfExecutions) {
+              this.completeExercises.push('ID: ' + stat.exerciseId.toString() + ' Сложность: ' + this.difficulties.filter(dif => dif.id ==
+                this.allUserExercises.filter(ex => ex.id == stat.exerciseId)[0].levelId)[0].name);
+            } else {
+              this.failedExercises.push('ID: ' + stat.exerciseId.toString() + ' Сложность: ' + this.difficulties.filter(dif => dif.id ==
+                this.allUserExercises.filter(ex => ex.id == stat.exerciseId)[0].levelId)[0].name);
+            }
+            this.avgSpeedArr.push(stat.avgSpeed);
+            this.maxSpeedArr.push(stat.maxSpeed);
+            this.exercisesIds.push(stat.exerciseId.toString() + ' (' + this.difficulties.filter(dif => dif.id ==
+              this.allUserExercises.filter(ex => ex.id == stat.exerciseId)[0].levelId)[0].name + ')');
+            this.wins = this.exCompl - this.fails;
+          }
+        });
+      });
 
-      }
-      this.wins = this.exCompl - this.fails;
     });
 
   }
