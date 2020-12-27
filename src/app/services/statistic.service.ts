@@ -23,6 +23,9 @@ export class StatisticService {
   getByUserID(id: number) {
     return this.http.get(environment.apiUrl + '/statistic/getStatisticByUser/' + id);
   }
+  getByExId(id:number){
+    return this.http.get(environment.apiUrl + '/statistic/getStatisticByExercise/' + id);
+  }
 
   update(statistic: Statistic) {
     return this.http.post(environment.apiUrl + '/statistic/updateStatistic', statistic);

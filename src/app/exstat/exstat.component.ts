@@ -36,8 +36,8 @@ export class ExStatComponent implements OnInit {
         this.httpDifService.getID(this.exercise.levelId).subscribe((data: Difficulty) => {
           this.exDiff = data;
         })
-        this.httpStatService.getAll().subscribe((data: Statistic[]) => {
-          this.exStat = data.filter(stat => stat.exerciseId == this.id);
+        this.httpStatService.getByExId(this.id).subscribe((data: Statistic[]) => {
+          this.exStat = data;
           this.httpUserService.getAll().subscribe((data: Info[]) => {
             for (let stat of this.exStat) {
               this.failCount += stat.numberOfFailures;
