@@ -23,6 +23,7 @@ const routes: Routes = [
     path: 'list', loadChildren: () => import('./exercise-list/exercise-list.module').then(m => m.ExerciseListModule)
   },
   {path: 'test', loadChildren: () => import('./test/test.module').then(m => m.TestModule)},
+  {path: 'main', loadChildren: () => import('./mainpage/mainpage.module').then(m => m.MainpageModule)},
   {path: 'exercises', component: ExercisesComponent}, //втф???
   {path: 'users', component: UsersComponent}
 ];

@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
             }
             this.popupMSG = 'Вход выполнен успешно';
             this.popupTitle = 'Операция выполнена';
-            this.router.navigate(['help']);
+            this.router.navigate(['main']);
           }, () => {
             this.popupMSG = 'Ошибка входа';
             this.popupTitle = 'Ошибка';

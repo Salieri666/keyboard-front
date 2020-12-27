@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="center" *ngIf="isHiddenByRoleUser">
+    <h5>Привет, {{username}}. В этом клавиатурном тренажере тебя ждет множество
+      интересных заданий.</h5>
+  </div>
+  <div class="center" *ngIf="isHiddenByRoleAdmin">
+    <h5>Привет, {{username}}. <br>Время {{time}}</h5>
+  </div>
+</div>
