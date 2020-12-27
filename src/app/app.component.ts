@@ -17,8 +17,10 @@ export class AppComponent implements OnInit {
   ngOnChanges(){
     this.ngDoCheck();
   }
-  ngDoCheck(){
+  id:number;
+  ngDoCheck(){ 
     if (localStorage.getItem("token") != undefined) {
+      this.id=parseInt(localStorage.getItem("userId"))
       if (localStorage.getItem("userRole") === 'ADMIN') {
         this.globalVal.setHiddenByRoleAdmin(true);
         this.globalVal.setHiddenByRoleUser(false);

@@ -1,13 +1,12 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {UsersComponent} from './users/users.component';
 
 const routes: Routes = [
   {
     path: 'train/:id', loadChildren: () => import('./train/train.module').then(m => m.TrainModule)
   },
   {
-    path: 'statistics', loadChildren: () => import('./statistics/statistics.module').then(m => m.StatisticsModule)
+    path: 'statistics/:id', loadChildren: () => import('./statistics/statistics.module').then(m => m.StatisticsModule)
   },
   {
     path: 'help', loadChildren: () => import('./help/help.module').then(m => m.HelpModule)
@@ -22,7 +21,7 @@ const routes: Routes = [
   {path: 'main', loadChildren: () => import('./mainpage/mainpage.module').then(m => m.MainpageModule)},
   {path: 'exercises', loadChildren: () => import('./exercises/exercises.module').then(m => m.ExercisesModule)},
   {path: 'exstat/:id', loadChildren: () => import('./exstat/exstat.module').then(m => m.ExstatModule)},
-  {path: 'users', component: UsersComponent},
+  {path: 'users',loadChildren: () => import('./users/users.module').then(m => m.UsersModule)},
   {
     path: '**', redirectTo: 'main'
   },

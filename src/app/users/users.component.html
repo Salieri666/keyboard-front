@@ -1,1 +1,78 @@
-<p>users works!</p>
+<div class="container">
+  <table class="table table-striped table-margin" style="overflow-x: scroll">
+    <thead>
+    <tr>
+      <th>
+        Логин пользователя
+      </th>
+      <th>
+
+      </th>
+      <th>
+
+      </th>
+      <th>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users | slice: (page-1) * pageSize : page * pageSize ; let i = index">
+      <td>{{user.username}}</td>
+      <td>
+        <button class="btn btn-outline-info" (click)="router.navigate(['/statistics/'+user.id])">Статистика</button>
+      </td>
+      <td>
+        <button class="btn btn-outline-info" (click)="open(mymodal, user.id, 'change')">Изменить</button>
+      </td>
+      <td>
+        <button class="btn btn-outline-info" (click)="openDelete(deletemodal, user.id)">Удалить</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <ngb-pagination
+    [(page)]="page"
+    [pageSize]="pageSize"
+    [collectionSize]="users.length" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+  <div class="container row justify-content-end">
+    <button class="btn btn-outline-info " (click)="open(mymodal, 0, 'add')">Добавить</button>
+  </div>
+</div>
+
+<ng-template #mymodal let-modal>
+  <div class="modal-footer justify-content-center">
+    <div class="container row justify-content-end">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <h6 class="aligntop">Логин пользователя:</h6>
+    <input type="text"
+           class="form-control inputstl " id="name" spellcheck="false"
+           name="username" [(ngModel)]="username" placeholder="Логин">
+    <h6 class="container text-center aligntop">Пароль пользователя:</h6>
+    <input type="password"
+           class="form-control inputstl " id="pass" spellcheck="false"
+           name="passw" [(ngModel)]="password" placeholder="Пароль">
+    <button type="button" class="btn btn-outline-info aligntop"
+            (click)="change();modal.close('Change');">Принять
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #deletemodal let-modal>
+  <div class="modal-footer justify-content-center text-center">
+    <div class="container row justify-content-end">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="container">
+      <h5 class="text-center">Вы уверены?</h5></div>
+    <div class="row text-center">
+      <button type="button" class="btn btn-outline-info aligntop" (click)="modal.close('Delete')">Удалить</button>
+      <button type="button" class="btn btn-outline-info aligntop marginLeft" (click)="modal.close('Cancel')">Отмена
+      </button>
+    </div>
+  </div>
+</ng-template>

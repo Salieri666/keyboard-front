@@ -2,13 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {ChartDataSets} from 'chart.js';
 import {Color} from 'ng2-charts';
 import {AuthserviceService} from '../auth/authservice.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {StatisticService} from "../services/statistic.service";
 import {Statistic} from "../models/statistic";
 import {DifficultyService} from "../services/difficulty.service";
 import {Difficulty} from "../models/difficulty";
 import {ExerciseService} from "../services/exercise.service";
 import {Exercise} from "../models/exercise";
+import {UserService} from "../services/user.service";
+import {User} from "../models/user";
 
 @Component({
   selector: 'app-root',
@@ -20,15 +22,15 @@ export class StatisticsComponent implements OnInit {
     if (!this.auth.islogin) {
       this.router.navigate(['/login']);
     } else {
-      this.login = localStorage.getItem('username');
       this.getStat();
     }
   }
 
-  constructor(private auth: AuthserviceService, private httpStatService: StatisticService, private httpDifService: DifficultyService,
-              private httpExService: ExerciseService, private router: Router) {
+  constructor(private auth: AuthserviceService,private httpUserService:UserService, private httpStatService: StatisticService, private httpDifService: DifficultyService,
+              private httpExService: ExerciseService, private router: Router, private activatedRoute: ActivatedRoute) {
+    this.id=activatedRoute.snapshot.params['id'];
   }
-
+  id:number;
   login = "";
   exCompl = 0;
   wins = 0;
@@ -44,8 +46,11 @@ export class StatisticsComponent implements OnInit {
   exercisesIds: string[] = [];
 
   getStat() {
-    this.httpStatService.getByUserID(parseInt(localStorage.getItem("userId"))).subscribe((data: Statistic[]) => {
+    this.httpStatService.getByUserID(this.id).subscribe((data: Statistic[]) => {
       this.allStat = data;
+      this.httpUserService.getById(this.id).subscribe((data:User)=>{
+        this.login=data.username;
+      })
       this.httpDifService.getAll().subscribe((data: Difficulty[]) => {
         this.difficulties = data;
         this.exCompl = 0;
@@ -54,7 +59,7 @@ export class StatisticsComponent implements OnInit {
         this.allTimeErr = 0;
         this.completeExercises = [];
         this.failedExercises = [];
-        this.httpExService.getByUserID(parseInt(localStorage.getItem("userId"))).subscribe((data: Exercise[]) => {
+        this.httpExService.getByUserID(this.id).subscribe((data: Exercise[]) => {
           this.allUserExercises = data;
           for (let stat of this.allStat) {
             this.exCompl += stat.numberOfExecutions;

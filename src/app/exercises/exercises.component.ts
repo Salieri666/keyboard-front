@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Exercise} from "../models/exercise";
 import {Difficulty} from "../models/difficulty";
-import {Statistic} from "../models/statistic";
 import {ExerciseService} from "../services/exercise.service";
 import {DifficultyService} from "../services/difficulty.service";
 import {AuthserviceService} from "../auth/authservice.service";
@@ -18,7 +17,6 @@ export class ExercisesComponent implements OnInit {
   exercises: Exercise[] = [];
   filtered: Exercise[] = [];
   difficulties: Difficulty[] = [];
-  statistics: Statistic[] = [];
 
   constructor(private httpExService: ExerciseService, private httpDifService: DifficultyService, private auth: AuthserviceService, private modalService: NgbModal,
               public router: Router) {

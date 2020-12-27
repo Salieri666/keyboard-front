@@ -11,7 +11,7 @@
       <a class="nav-link" routerLink="/list" routerLinkActive="active">Учиться</a>
     </li>
     <li *ngIf="isHidden  && isHiddenByRoleUser" class="nav-item pill-color">
-      <a class="nav-link" routerLink="/statistics" routerLinkActive="active">Статистика</a>
+      <a class="nav-link" [routerLink]="['/statistics',this.id]" routerLinkActive="active">Статистика</a>
     </li>
     <li *ngIf="isHidden  && isHiddenByRoleAdmin" class="nav-item pill-color">
       <a class="nav-link" routerLink="/users" routerLinkActive="active">Пользователи</a>
