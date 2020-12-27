@@ -22,7 +22,7 @@
         <button class="btn btn-outline-info" (click)="router.navigate(['/ex/stat'])">Статистика</button>
       </td>
       <td>
-        <button class="btn btn-outline-info" (click)="open(mymodal, exercise.id)">Изменить</button>
+        <button class="btn btn-outline-info" (click)="open(mymodal, exercise.id, 'change')">Изменить</button>
       </td>
       <td>
         <button class="btn btn-outline-info" (click)="openDelete(deletemodal, exercise.id)">Удалить</button>
@@ -34,7 +34,12 @@
     [(page)]="page"
     [pageSize]="pageSize"
     [collectionSize]="filtered.length" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
-  <button class="btn btn-outline-info justify-content-end" (click)="add()">Добавить</button>
+  <div class="container row justify-content-end">
+    <button class="btn btn-outline-info " (click)="open(mymodal, 0, 'add')">Добавить</button>
+  </div>
+  <div class="container row justify-content-end">
+    <button class="btn btn-outline-info aligntop" (click)="openLevel(levelmodal)">Уровни сложности</button>
+  </div>
 </div>
 
 <ng-template #mymodal let-modal>
@@ -47,14 +52,16 @@
     <div class="sizeLeft marginTop">
       <button class="btn btn-outline-info aligntop btn-size" (click)="openFile()">Загрузить из файла<input type="file"
                                                                                                            style="display:none"
-                                                                                                           accept=".txt" (change)="fileChanged($event)">
+                                                                                                           accept=".txt"
+                                                                                                           (change)="fileChanged($event)">
       </button>
       <button class="btn btn-outline-info aligntop btn-size" (click)="generate();">Сгенерировать</button>
     </div>
     <div class="sizeRight text-center">
-      <h6>Характеристики упражнения</h6>
+      <h5>Характеристики упражнения</h5>
+      <h6 class="aligntop">Название упражнения:</h6>
       <input type="text"
-             class="form-control inputstl aligntop" id="name" spellcheck="false"
+             class="form-control inputstl " id="name" spellcheck="false"
              name="passwordCheck" [(ngModel)]="exerciseName" placeholder="Название">
       <h6 class="container aligntop">Уровень сложности:</h6>
       <div ngbDropdown class="d-inline-block">
@@ -75,6 +82,7 @@
     </div>
   </div>
 </ng-template>
+
 <ng-template #deletemodal let-modal>
   <div class="modal-footer justify-content-center text-center">
     <div class="container row justify-content-end">
@@ -87,6 +95,50 @@
     <div class="row text-center">
       <button type="button" class="btn btn-outline-info aligntop" (click)="modal.close('Delete')">Удалить</button>
       <button type="button" class="btn btn-outline-info aligntop marginLeft" (click)="modal.close('Cancel')">Отмена
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #levelmodal let-modal>
+  <div class="modal-footer justify-content-center text-center">
+    <div class="container row justify-content-end">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="container">
+      <h6 class="container aligntop">Уровень сложности:</h6>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-info" id="dropdownBasic2" ngbDropdownToggle>{{currentDiff}}</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+          <span *ngFor="let difficulty of difficulties">
+          <button ngbDropdownItem (click)="reloadDif(difficulty.id)">{{difficulty.name}}</button>
+            </span>
+        </div>
+      </div>
+      <h6 class="aligntop">ID зоны</h6>
+      <input type="text"
+             class="form-control inputstl aligntop" id="zone" spellcheck="false"
+             name="passwordCheck" [(ngModel)]="newDif.zoneId" placeholder="ID зоны">
+      <h6>Максимум ошибок</h6>
+      <input type="text"
+             class="form-control inputstl aligntop" id="max_err" spellcheck="false"
+             name="passwordCheck" [(ngModel)]="newDif.maxErrors" placeholder="Максимум ошибок">
+      <h6>Минимальная длина</h6>
+      <input type="text"
+             class="form-control inputstl aligntop" id="min_len" spellcheck="false"
+             name="passwordCheck" [(ngModel)]="newDif.minLength" placeholder="Минимальная длина">
+      <h6>Максимальная длина</h6>
+      <input type="text"
+             class="form-control inputstl aligntop" id="max_len" spellcheck="false"
+             name="passwordCheck" [(ngModel)]="newDif.maxLength" placeholder="Максимальная длина">
+      <h6>Время нажатия</h6>
+      <input type="text"
+             class="form-control inputstl aligntop" id="press_time" spellcheck="false"
+             name="passwordCheck" [(ngModel)]="newDif.timePress" placeholder="Время нажатия">
+      <button type="button" class="btn btn-outline-info aligntop"
+              (click)="updateLevel();modal.close('Save click');">Принять
       </button>
     </div>
   </div>

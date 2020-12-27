@@ -45,21 +45,26 @@ export class ExercisesComponent implements OnInit {
   closeResult: string;
   exerciseName: string = "";
   currentDiff: string = "";
+  newDif: Difficulty = new Difficulty();
 
   changeDif(id: number) {
     this.currentDiff = this.difficulty(id);
     this.newExercise.levelId = id;
   }
 
-  open(content, id: number) {
-    const exercise = this.exercises.filter(ex => ex.id == id)[0];
-    this.newExercise.levelId = exercise.levelId;
-    this.newExercise.words = exercise.words;
-    this.newExercise.id = exercise.id;
-    this.newExercise.name = exercise.name;
-    this.exerciseWords = this.newExercise.words;
-    this.exerciseName = this.newExercise.name;
-    this.currentDiff = this.difficulties.filter(dif => dif.id == this.newExercise.levelId)[0].name;
+  open(content, id: number, reason: string) {
+    if (reason === "change") {
+      this.newExercise = JSON.parse(JSON.stringify(this.exercises.filter(ex => ex.id == id)[0]));
+      this.exerciseWords = this.newExercise.words;
+      this.exerciseName = this.newExercise.name;
+      this.currentDiff = this.difficulties.filter(dif => dif.id == this.newExercise.levelId)[0].name;
+    } else if (reason === "add") {
+      this.exerciseWords = "";
+      this.exerciseName = "";
+      this.currentDiff = this.difficulties[0].name;
+      this.newExercise.levelId = this.difficulties[0].id;
+      this.newExercise.id=null;
+    }
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       centered: true,
@@ -88,36 +93,46 @@ export class ExercisesComponent implements OnInit {
 
   file: any;
   exerciseWords: string = "";
-  openFile(){
+
+  openFile() {
     document.querySelector('input').click();
   }
+
   fileChanged(e) {
     this.file = e.target.files[0];
     this.uploadDocument();
   }
-  uploadDocument(){
+
+  uploadDocument() {
     let fileReader = new FileReader();
-    fileReader.onload = (e) => {
-      this.exerciseWords=fileReader.result.toString();
+    fileReader.onload = () => {
+      this.exerciseWords = fileReader.result.toString();
     }
     fileReader.readAsText(this.file);
   }
+
   change() {
     this.newExercise.words = this.exerciseWords;
     this.newExercise.name = this.exerciseName;
-    this.httpExService.update(this.newExercise).subscribe(()=>window.location.reload());
+    if (this.newExercise.id!=null) {
+      this.httpExService.update(this.newExercise).subscribe(() => window.location.reload());
+    } else {
+      this.httpExService.save(this.newExercise).subscribe(() => window.location.reload());
+    }
   }
 
   delete(id: number) {
-    this.httpExService.delete(id).subscribe(()=>window.location.reload());
+    this.httpExService.delete(id).subscribe(() => window.location.reload());
   }
-  generate(){
-    this.httpExService.getRandomExercise().subscribe((data:Exercise)=>{
-      this.newExercise.words=data.words;
-      this.exerciseWords=this.newExercise.words;
+
+  generate() {
+    this.httpExService.getRandomExercise().subscribe((data: Exercise) => {
+      this.newExercise.words = data.words;
+      this.exerciseWords = this.newExercise.words;
       this.changeDif(data.levelId);
     });
   }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -127,9 +142,29 @@ export class ExercisesComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  add(){
 
+  reloadDif(id: number) {
+    this.newDif = JSON.parse(JSON.stringify(this.difficulties.filter(dif => dif.id == id)[0]));
+    this.currentDiff = this.newDif.name;
   }
+
+  openLevel(content) {
+    this.currentDiff = this.difficulties[0].name;
+    this.newDif = JSON.parse(JSON.stringify(this.difficulties[0]));
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      centered: true
+    }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  updateLevel() {
+    this.httpDifService.update(this.newDif).subscribe(() => window.location.reload());
+  }
+
   page = 1;
   pageSize = 5;
 
