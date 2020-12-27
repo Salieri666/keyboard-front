@@ -4,13 +4,14 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {AuthserviceService} from './authservice.service';
+import {GlobalValService} from "../services/global-val.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomHttpInterceptorService implements HttpInterceptor {
 
-  constructor(private auth: AuthserviceService,
+  constructor(private auth: AuthserviceService, private globalVal: GlobalValService,
               private router: Router) {
   }
 
@@ -27,6 +28,9 @@ export class CustomHttpInterceptorService implements HttpInterceptor {
             if (err instanceof HttpErrorResponse) {
               if (err.status === 401 || err.status === 403) {
                 this.auth.logout();
+                this.globalVal.setHiddenByRoleAdmin(false);
+                this.globalVal.setHiddenByRoleUser(false);
+                this.globalVal.setHiddenState(false);
                 this.router.navigate(['/login']);
               }
             }

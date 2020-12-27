@@ -129,6 +129,6 @@ export class ExercisesComponent implements OnInit {
   }
 
   page = 1;
-  pageSize = 1;
+  pageSize = 5;
 
 }

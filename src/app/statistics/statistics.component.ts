@@ -61,10 +61,10 @@ export class StatisticsComponent implements OnInit {
             this.allTimeErr += stat.errors;
             this.fails += stat.numberOfFailures;
             if (stat.numberOfFailures < stat.numberOfExecutions) {
-              this.completeExercises.push('ID: ' + stat.exerciseId.toString() + ' Сложность: ' + this.difficulties.filter(dif => dif.id ==
+              this.completeExercises.push('Название: '+ data.filter(ex=>ex.id==stat.exerciseId)[0].name + ' | Сложность: ' + this.difficulties.filter(dif => dif.id ==
                 this.allUserExercises.filter(ex => ex.id == stat.exerciseId)[0].levelId)[0].name);
             } else {
-              this.failedExercises.push('ID: ' + stat.exerciseId.toString() + ' Сложность: ' + this.difficulties.filter(dif => dif.id ==
+              this.failedExercises.push('Название: '+data.filter(ex=>ex.id==stat.exerciseId)[0].name + ' | Сложность: ' + this.difficulties.filter(dif => dif.id ==
                 this.allUserExercises.filter(ex => ex.id == stat.exerciseId)[0].levelId)[0].name);
             }
             this.avgSpeedArr.push(stat.avgSpeed);

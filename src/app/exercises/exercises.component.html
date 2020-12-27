@@ -17,7 +17,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let exercise of filtered | slice: (page-1) * pageSize : page * pageSize ; let i = index">
-      <td>{{exercise.id}} ({{difficulty(exercise.levelId)}})</td>
+      <td>{{exercise.name}} ({{difficulty(exercise.levelId)}})</td>
       <td>
         <button class="btn btn-outline-info" (click)="router.navigate(['/ex/stat'])">Статистика</button>
       </td>
