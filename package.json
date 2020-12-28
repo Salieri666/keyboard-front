@@ -25,6 +25,7 @@
     "chart.js": "^2.9.4",
     "mdbootstrap": "^4.19.1",
     "ng2-charts": "^2.4.2",
+    "ng2-go-top-button": "^8.0.6",
     "rxjs": "~6.6.0",
     "simple-keyboard": "^2.32.56",
     "simple-keyboard-layouts": "^1.13.99",

@@ -22,9 +22,7 @@ const routes: Routes = [
   {path: 'exercises', loadChildren: () => import('./exercises/exercises.module').then(m => m.ExercisesModule)},
   {path: 'exstat/:id', loadChildren: () => import('./exstat/exstat.module').then(m => m.ExstatModule)},
   {path: 'users',loadChildren: () => import('./users/users.module').then(m => m.UsersModule)},
-  {
-    path: '**', redirectTo: 'main'
-  },
+
 ];
 
 @NgModule({

@@ -45,7 +45,7 @@ export class TrainComponent implements OnInit {
         });
       });
       this.httpStatService.getByUserID(parseInt(localStorage.getItem('userId'))).subscribe(
-        (data: Statistic[]) => this.statistics = data.filter(statistic=>statistic.exerciseId == this.id));
+        (data: Statistic[]) => this.statistics = data.filter(statistic => statistic.exerciseId == this.id));
     }
   }
 
@@ -168,8 +168,7 @@ export class TrainComponent implements OnInit {
   complition() {
     this.pauseTimer();
     this.stopPressTimer();
-
-    if (this.statistics[0] == undefined) {
+    if (typeof this.statistics[0] === 'undefined') {
       this.newStat.userId = parseInt(localStorage.getItem('userId'));
       this.newStat.exerciseId = this.id;
 
@@ -191,7 +190,6 @@ export class TrainComponent implements OnInit {
       this.newStat.id = this.statistics[0].id;
       this.newStat.userId = parseInt(localStorage.getItem('userId'));
       this.newStat.exerciseId = this.id;
-      // 12.5*2 + avg ) / 3
       this.newStat.dateExecution = new Date();
       this.newStat.errors = this.errorCount;
 
