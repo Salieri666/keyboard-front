@@ -163,50 +163,54 @@ export class TrainComponent implements OnInit {
 
   }
 
+  once: boolean = true;
   filtered: Statistic[];
 
   complition() {
     this.pauseTimer();
     this.stopPressTimer();
-    if (typeof this.statistics[0] === 'undefined') {
-      this.newStat.userId = parseInt(localStorage.getItem('userId'));
-      this.newStat.exerciseId = this.id;
+    if (this.once) {
+      if (typeof this.statistics[0] === 'undefined') {
+        this.newStat.userId = parseInt(localStorage.getItem('userId'));
+        this.newStat.exerciseId = this.id;
 
-      this.newStat.dateExecution = new Date();
-      this.newStat.errors = this.errorCount;
+        this.newStat.dateExecution = new Date();
+        this.newStat.errors = this.errorCount;
 
-      this.newStat.numberOfExecutions = 1;
-      if (this.failure) {
-        this.newStat.numberOfFailures = 1;
-        this.newStat.maxSpeed = 0;
-        this.newStat.avgSpeed = 0;
-      } else {
-        this.newStat.numberOfFailures = 0;
-        this.newStat.maxSpeed = parseInt(this.speed);
-        this.newStat.avgSpeed = parseInt(this.speed);
-      }
-      this.httpStatService.save(this.newStat).subscribe();
-    } else {
-      this.newStat.id = this.statistics[0].id;
-      this.newStat.userId = parseInt(localStorage.getItem('userId'));
-      this.newStat.exerciseId = this.id;
-      this.newStat.dateExecution = new Date();
-      this.newStat.errors = this.errorCount;
-
-      this.newStat.numberOfExecutions = this.statistics[0].numberOfExecutions + 1;
-      if (this.failure) {
-        this.newStat.avgSpeed = this.statistics[0].avgSpeed;
-        this.newStat.numberOfFailures = this.statistics[0].numberOfFailures + 1;
-        this.newStat.maxSpeed = this.statistics[0].maxSpeed;
-      } else {
-        this.newStat.numberOfFailures = this.statistics[0].numberOfFailures;
-        this.newStat.avgSpeed = ((this.statistics[0].avgSpeed * this.statistics[0].numberOfExecutions) + parseInt(this.speed)) / (this.statistics[0].numberOfExecutions + 1);
-        if (this.statistics[0].maxSpeed < parseInt(this.speed))
+        this.newStat.numberOfExecutions = 1;
+        if (this.failure) {
+          this.newStat.numberOfFailures = 1;
+          this.newStat.maxSpeed = 0;
+          this.newStat.avgSpeed = 0;
+        } else {
+          this.newStat.numberOfFailures = 0;
           this.newStat.maxSpeed = parseInt(this.speed);
-        else this.newStat.maxSpeed = this.statistics[0].maxSpeed;
+          this.newStat.avgSpeed = parseInt(this.speed);
+        }
+        this.httpStatService.save(this.newStat).subscribe();
+      } else {
+        this.newStat.id = this.statistics[0].id;
+        this.newStat.userId = parseInt(localStorage.getItem('userId'));
+        this.newStat.exerciseId = this.id;
+        this.newStat.dateExecution = new Date();
+        this.newStat.errors = this.errorCount;
+
+        this.newStat.numberOfExecutions = this.statistics[0].numberOfExecutions + 1;
+        if (this.failure) {
+          this.newStat.avgSpeed = this.statistics[0].avgSpeed;
+          this.newStat.numberOfFailures = this.statistics[0].numberOfFailures + 1;
+          this.newStat.maxSpeed = this.statistics[0].maxSpeed;
+        } else {
+          this.newStat.numberOfFailures = this.statistics[0].numberOfFailures;
+          this.newStat.avgSpeed = ((this.statistics[0].avgSpeed * this.statistics[0].numberOfExecutions) + parseInt(this.speed)) / (this.statistics[0].numberOfExecutions + 1);
+          if (this.statistics[0].maxSpeed < parseInt(this.speed))
+            this.newStat.maxSpeed = parseInt(this.speed);
+          else this.newStat.maxSpeed = this.statistics[0].maxSpeed;
+        }
+        this.httpStatService.update(this.newStat).subscribe();
       }
-      this.httpStatService.update(this.newStat).subscribe();
     }
+    this.once=false;
     this.end = true;
     this.inprogress = false;
   }
